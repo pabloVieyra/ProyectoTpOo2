@@ -6,9 +6,9 @@ public class ViewRouteHelper {
 	//CAMBIAR NOMBRE
 	public final static String RAIZ = " ";
 	public final static String MENU = "menu";
-	public final static String ADMIN = "admin-form";
-	public final static String MANAGER = "user-form";
-	public final static String PROFESSOR = "profe-form";
+	public final static String ADMIN = "admin-form/admin-view";
+	public final static String MANAGER = "user-form/user-view";
+	public final static String PROFESSOR = "professor";
 }
 
 

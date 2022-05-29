@@ -12,7 +12,6 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -27,9 +26,6 @@ public class Aula {
 	@Column 
 	@NotNull
 	private int numAula;
-	
-	@OneToOne(optional = true, cascade = CascadeType.ALL, fetch=FetchType.LAZY, mappedBy = "catedra")  
-    private NotaPedido notaPedido;
 
 	@OneToMany(cascade=CascadeType.PERSIST,fetch=FetchType.LAZY,mappedBy="id")
 	private Set<Espacio> espacio;
@@ -57,14 +53,6 @@ public class Aula {
 		this.numAula = numAula;
 	}
 
-	public NotaPedido getNotaPedido() {
-		return notaPedido;
-	}
-
-	public void setNotaPedido(NotaPedido notaPedido) {
-		this.notaPedido = notaPedido;
-	}
-
 	public Set<Espacio> getEspacio() {
 		return espacio;
 	}
@@ -83,12 +71,8 @@ public class Aula {
 
 	@Override
 	public String toString() {
-		return "Aula [id=" + id + ", numAula=" + numAula + ", notaPedido=" + notaPedido + ", espacio=" + espacio
+		return "Aula [id=" + id + ", numAula=" + numAula + ", espacio=" + espacio
 				+ ", edificio=" + edificio + "]";
 	}
 
-	
-	
-	
 }
-

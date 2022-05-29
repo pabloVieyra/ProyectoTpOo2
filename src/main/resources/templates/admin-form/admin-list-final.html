@@ -1,0 +1,32 @@
+<div class="table-responsive">
+	<table id="userList" class="table table-bordered table-hover table-striped">
+		<thead class="thead-light">
+             <tr>
+             	<th scope="col">#</th>
+                <th scope="col">Id pedido</th>
+                <th scope="col">Carrera</th>
+                <th scope="col">Materia</th>
+                <th scope="col">Cantidad de estudiantes</th>
+                <th scope="col">Turno</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Tipo de aula</th>
+                <th scope="col">Con proyector</th>
+                <th scope="col">Descripcion</th>
+              </tr>
+			</thead>
+		<tbody>
+            <tr th:each= "final: ${finalesList}">
+            	<td href="#"><a></a></td>
+            	<td th:text="${final.id}"></td>
+                <td th:text="${final.materia.carrera.name}"></td>
+                <td th:text="${final.materia.name}"></td>
+				<td th:text="${final.cantEstudiantes}"></td>
+				<td th:text="${final.turno}"></td>
+				<td th:text="${final.fecha}"></td>
+				<td th:text="${final.tipoAula}"></td>
+				<td th:text="${final.conProyector}"></td>
+				<td th:text="${final.descripcion}"></td>
+             </tr>
+		</tbody>
+	</table>
+</div>

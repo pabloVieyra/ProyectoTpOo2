@@ -12,9 +12,10 @@ import javax.validation.constraints.NotBlank;
 
 
 
+
 @Entity
 @Table(name = "cursada")
-public class Cursada extends Catedra{
+public class Cursada extends NotaPedido{
 	
 	
 	
