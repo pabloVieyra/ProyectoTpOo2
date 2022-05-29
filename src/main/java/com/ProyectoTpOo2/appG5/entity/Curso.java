@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+
 @Entity
 @Table(name = "curso")
 public class Curso {

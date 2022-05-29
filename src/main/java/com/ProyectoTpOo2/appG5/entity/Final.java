@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "final")
-public class Final extends Catedra{
+public class Final extends NotaPedido{
 	
 
 	@Column 
@@ -84,15 +84,14 @@ public class Final extends Catedra{
 
 	@Override
 	public String toString() {
-		return "Final [fecha=" + fecha + ", cantEstudiantes=" + cantEstudiantes + ", turno=" + turno + ", materia="
-				+ materia + ", profesores=" + profesores + "]";
+		return "Final [fecha=" + fecha + ", cantEstudiantes=" + cantEstudiantes + ", turno=" + turno + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(cantEstudiantes, fecha, materia, profesores, turno);
+		result = prime * result + Objects.hash(cantEstudiantes, fecha, turno);
 		return result;
 	}
 
@@ -105,9 +104,7 @@ public class Final extends Catedra{
 		if (getClass() != obj.getClass())
 			return false;
 		Final other = (Final) obj;
-		return cantEstudiantes == other.cantEstudiantes && Objects.equals(fecha, other.fecha)
-				&& Objects.equals(materia, other.materia) && Objects.equals(profesores, other.profesores)
-				&& turno == other.turno;
+		return cantEstudiantes == other.cantEstudiantes && Objects.equals(fecha, other.fecha) && turno == other.turno;
 	}
 
 	
