@@ -10,8 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -23,23 +21,33 @@ public class Espacio {
 	private Long id;
 	
 	@Column 
-	@NotBlank
 	private LocalDate fecha;
 	
 	@Column 
-	@NotBlank
-	private char turno;
+	private String turno;
 	
 	@Column 
-	@NotNull
 	private boolean libre;
 	
+
 	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	private Aula aula;
 
 	public Espacio() {
 		super();
 	}
+
+	
+	
+	public Espacio(LocalDate fecha, String turno, boolean libre, Aula aula) {
+		super();
+		this.fecha = fecha;
+		this.turno = turno;
+		this.libre = libre;
+		this.aula = aula;
+	}
+
+
 
 	public Long getId() {
 		return id;
@@ -57,11 +65,11 @@ public class Espacio {
 		this.fecha = fecha;
 	}
 
-	public char getTurno() {
+	public String getTurno() {
 		return turno;
 	}
 
-	public void setTurno(char turno) {
+	public void setTurno(String turno) {
 		this.turno = turno;
 	}
 
@@ -83,11 +91,7 @@ public class Espacio {
 
 	@Override
 	public String toString() {
-		return "Espacio [id=" + id + ", fecha=" + fecha + ", turno=" + turno + ", libre=" + libre + ", aula=" + aula
-				+ "]";
+		return "Espacio [id=" + id + ", fecha=" + fecha + ", turno=" + turno + ", libre=" + libre + "]";
 	}
-	
-	
-	
 	
 }

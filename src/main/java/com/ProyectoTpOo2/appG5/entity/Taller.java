@@ -3,7 +3,6 @@ package com.ProyectoTpOo2.appG5.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -11,11 +10,9 @@ import javax.validation.constraints.NotNull;
 public class Taller extends Aula{
 
 	@Column 
-	@NotNull
 	private int cantPc;
 	
 	@Column 
-	@NotNull
 	private int cantSillas;
 
 	public Taller() {

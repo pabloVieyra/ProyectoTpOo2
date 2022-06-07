@@ -12,7 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
+
+
 
 @Entity
 @Table(name = "materia")
@@ -23,17 +24,16 @@ public class Materia {
 	private Long id;
 	
 	@Column 
-	@NotBlank
 	private String Name;
+	
 	
 	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	private Carrera carrera;
 
+	
 	@OneToMany(cascade=CascadeType.PERSIST,fetch=FetchType.LAZY,mappedBy="id")
 	private Set<Curso> cursos;
 	
-	@OneToMany(cascade=CascadeType.PERSIST,fetch=FetchType.LAZY,mappedBy="id")
-	private Set<Final> finales;
 	
 	public Materia() {
 		super();
@@ -71,23 +71,15 @@ public class Materia {
 		this.cursos = cursos;
 	}
 
-	public Set<Final> getFinales() {
-		return finales;
-	}
-
-	public void setFinales(Set<Final> finales) {
-		this.finales = finales;
-	}
 
 	@Override
 	public String toString() {
-		return "Materia [id=" + id + ", Name=" + Name + ", carrera=" + carrera + ", cursos=" + cursos + ", finales="
-				+ finales + "]";
+		return "Materia [id=" + id + ", Name=" + Name + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(Name, carrera, cursos, finales, id);
+		return Objects.hash(Name, id);
 	}
 
 	@Override
@@ -99,12 +91,9 @@ public class Materia {
 		if (getClass() != obj.getClass())
 			return false;
 		Materia other = (Materia) obj;
-		return Objects.equals(Name, other.Name) && Objects.equals(carrera, other.carrera)
-				&& Objects.equals(cursos, other.cursos) && Objects.equals(finales, other.finales)
-				&& Objects.equals(id, other.id);
+		return Objects.equals(Name, other.Name) && Objects.equals(id, other.id);
 	}
 
-	
 	
 	
 }

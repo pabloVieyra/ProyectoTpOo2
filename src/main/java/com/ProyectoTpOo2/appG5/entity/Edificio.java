@@ -11,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
+
 
 @Entity
 @Table(name = "edificio")
@@ -22,8 +22,8 @@ public class Edificio {
 	private Long id;
 	
 	@Column 
-	@NotBlank
 	private String nombre;
+	
 	
 	@OneToMany(cascade=CascadeType.PERSIST,fetch=FetchType.LAZY,mappedBy="id")
 	private Set<Aula> aula;
@@ -58,12 +58,12 @@ public class Edificio {
 
 	@Override
 	public String toString() {
-		return "Edificio [id=" + id + ", nombre=" + nombre + ", aula=" + aula + "]";
+		return "Edificio [id=" + id + ", nombre=" + nombre +"]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(aula, id, nombre);
+		return Objects.hash(id, nombre);
 	}
 
 	@Override
@@ -75,8 +75,9 @@ public class Edificio {
 		if (getClass() != obj.getClass())
 			return false;
 		Edificio other = (Edificio) obj;
-		return Objects.equals(aula, other.aula) && Objects.equals(id, other.id) && Objects.equals(nombre, other.nombre);
+		return Objects.equals(id, other.id) && Objects.equals(nombre, other.nombre);
 	}
+
 	
 	
 }

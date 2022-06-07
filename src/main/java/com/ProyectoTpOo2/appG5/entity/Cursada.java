@@ -5,11 +5,11 @@ import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 
+import org.springframework.format.annotation.DateTimeFormat;
 
 
 
@@ -18,16 +18,19 @@ import javax.validation.constraints.NotBlank;
 public class Cursada extends NotaPedido{
 	
 	
+	@Column 
+	private int porcentaje;
 	
 	@Column 
-	@NotBlank
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate fechaInicio;
 	
 	@Column 
-	@NotBlank
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate fechaFin;
 	
-	@OneToOne(optional = true, cascade = CascadeType.ALL, fetch=FetchType.LAZY, mappedBy = "cursada")  
+	@JoinColumn(unique = true)
+	@OneToOne(cascade = CascadeType.ALL)    
     private Curso curso;
 
 	public Cursada() {
@@ -57,6 +60,14 @@ public class Cursada extends NotaPedido{
 	public void setCurso(Curso curso) {
 		this.curso = curso;
 	}
+	
+	public int getPorcentaje() {
+		return porcentaje;
+	}
+
+	public void setPorcentaje(int porcentaje) {
+		this.porcentaje = porcentaje;
+	}
 
 	@Override
 	public String toString() {
@@ -83,8 +94,5 @@ public class Cursada extends NotaPedido{
 		return Objects.equals(curso, other.curso) && Objects.equals(fechaFin, other.fechaFin)
 				&& Objects.equals(fechaInicio, other.fechaInicio);
 	}
-
-	
-	
 	
 }
