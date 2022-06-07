@@ -36,6 +36,9 @@ public class NotaPedido{
 	@Column 
     private String tipoAula;
 	
+	@Column
+	private boolean eliminado;
+	
 	@Column 
 	private boolean conProyector;
 	
@@ -95,9 +98,15 @@ public class NotaPedido{
 	public void setAula(Aula aula) {
 		this.aula = aula;
 	}
+	
+	public boolean isEliminado() {
+		return eliminado;
+	}
 
-	
-	
+	public void setEliminado(boolean eliminado) {
+		this.eliminado = eliminado;
+	}
+
 	public String getEdificio() {
 		return edificio;
 	}
@@ -134,7 +143,14 @@ public class NotaPedido{
 				&& Objects.equals(tipoAula, other.tipoAula);
 	}
 
-	
+	//para mostrar por pantalla el aula y nombre del edificio, falta terminar con el front
+	public String infoAula() {
+		String respuesta = "";
+		if(this.isAprobado()) {
+			respuesta.concat(aula.getEdificio()+"-"+aula.getNumAula());
+		}
+		return "respuesta";
+	}
 
 
 

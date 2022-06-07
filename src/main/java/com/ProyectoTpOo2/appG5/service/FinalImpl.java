@@ -2,7 +2,6 @@ package com.ProyectoTpOo2.appG5.service;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,9 +16,11 @@ public class FinalImpl implements FinalService{
 	FinalRepository repository;
 	
 	@Override
-	public List<Final> getAllFinales(){return (List<Final>) repository.findAll();}
+	public List<Final> getAllFinales(){
+		return (List<Final>) repository.findAll();
+	}
 
-	public Optional<Final> traerFinalId(Long id) {
+	public Optional<Final> traerFinalId(Long id){
 		return repository.findById(id);
 	}
 	
@@ -32,6 +33,17 @@ public class FinalImpl implements FinalService{
 	
 	public void borrarFinal(Long id) throws Exception{
 		Final fin = repository.findFinalById(id);
-		repository.delete(fin);
+		if(fin == null) throw new Exception("No se encontro el pedido");
+		fin.setEliminado(true);
+		repository.save(fin);
+	}
+	
+	@Override
+	public Iterable<Final> getfinalesActivos(){
+		return repository.findByEliminado(false);
+		}
+	
+	public Final actualizarFinal(Final fin){
+		return repository.save(fin);
 	}
 }

@@ -35,6 +35,7 @@
 		                <th scope="col">Fecha</th>
 		                <th scope="col">Tipo de aula</th>
 		                <th scope="col">Con proyector</th>
+		                <th scope="col">Aula</th>
 		                <th scope="col">Descripcion</th>
 		                <th scope="col"></th>
 		              </tr>
@@ -50,9 +51,10 @@
 						<th th:text="${final.fecha}"></th>
 						<th th:text="${final.tipoAula}"></th>
 						<th th:text="${final.conProyector}"></th>
+						<th></th>
 						<th th:text="${final.descripcion}"></th>  
 						<th>
-							<a th:href="@{/borrar/} + ${final.id}"><img src="/img/eliminar.png"></a>
+							<a th:href="@{/listafinal/borrar/} + ${final.id}"><img src="/img/eliminar.png"></a>
 						</th>
 		             </tr>
 				</tbody>
