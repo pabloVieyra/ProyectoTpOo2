@@ -1,0 +1,82 @@
+body{
+    background: url(../img/background.jpg) no-repeat center center fixed;
+    background-size: cover;
+}
+
+.main-section{
+    margin:0 auto;
+    margin-top:5%;
+}
+.card{
+	opacity: .95;
+}
+.card-body{
+    background-color: rgb(128, 0, 64);
+    box-shadow: 0px 0px 3px rgb(128, 0, 0);
+}
+
+label{
+	font-weight: bold;
+}
+
+.nav-tabs .nav-item a:not(.active){
+	background-color: #d1d3d6;
+}
+
+.nav-tabs{
+	border-bottom:0px;
+}
+
+.table{
+	background-color: rgba(128, 0, 64, 0.5);
+}
+
+.contenidoTabla{
+	color: #FFFFFF;
+}
+
+form{
+	background-color: rgba(128, 0, 64, 0.5);
+	color: #FFFFFF;
+	 margin: 20px;
+}
+
+.containerMenu{
+	width:100%;
+	margin: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(128, 0, 64, 0.5);
+}
+
+.botones{
+	width: 60%;
+	display: grid;
+	grid-template-rows: repeat(6,auto);
+	align-items: center;
+	text-align: center;
+}
+
+.boton{
+	height: 75px;
+	width: 100%;
+	background-color: rgba(255, 255, 255, 0.65);
+	border-radius: 20px;
+	margin:10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+
+.boton>a{
+	color: #000000;
+	text-decoration: none;
+	font-size: 50px;
+}
+
+.boton:hover {
+    background: rgba(0, 0, 0, 0.25);
+    
+  }
