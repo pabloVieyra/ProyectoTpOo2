@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Gestion aulas</title>
+	
+	<!--JQUERY-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	
+	<!-- FRAMEWORK BOOTSTRAP para el estilo de la pagina-->
+	<link rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script 
+		src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script 
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	
+	<!-- Los iconos tipo Solid de Fontawesome-->
+	<link rel="stylesheet"
+		href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+	<script src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+	
+	<!-- Nuestro css-->
+	<link rel="stylesheet" type="text/css" href="/form.css" th:href="@{/css/form.css}">
+
+</head>
+<body>
+    <form class="form" id="formcursada" role="form" autocomplete="off" th:action="@{/formcursada}" th:object="${cursada}" method="post">
+	
+        <div class="form-group row">
+                <label  class="col-lg-3 col-form-label form-control-label">Curso</label>
+                <div class="col-lg-9">
+                    <select class="form-control" th:field="${cursada.curso}" >
+                        <option th:each= "curso:${cursos}" th:value="${curso.id}" th:text="${curso.codCurso}" required></option>
+                    </select>
+                </div>
+            </div>
+    
+        <div class="form-group row">
+            <label class="col-lg-3 col-form-label form-control-label">Fecha inicio</label>
+            <div class="col-lg-9">
+                <input class="form-control" id="fechaInicio" type="date" th:field="${cursada.fechaInicio}" th:required="true">
+                <p class="alert-danger" id="cursadawarnings1"></p>
+            </div>
+        </div>
+    
+        <div class="form-group row">
+            <label class="col-lg-3 col-form-label form-control-label">Fecha fin</label>
+            <div class="col-lg-9">
+                <input class="form-control" id="fechaFin" type="date" th:field="${cursada.fechaFin}" th:required="true">
+                <p class="alert-danger" id="cursadawarnings"></p>
+            </div>
+        </div>
+    
+    
+        <div class="form-group row">
+            <label class="col-lg-3 col-form-label form-control-label">Tipo de aula</label>
+            <div class="col-lg-9" >
+                
+                <input type="radio" id= "taller" value="taller" th:field="${cursada.tipoAula}" th:required="true">
+                <label for="taller">Taller</label>
+                
+                <input type="radio" id= "tradicional" value="tradicional" th:field="${cursada.tipoAula}" th:required="true">
+                <label for="tradicional">Tradicional</label>
+                
+            </div>
+        </div>
+    
+        <div class="form-group row">
+                <label class="col-lg-3 col-form-label form-control-label">Porcentaje</label>
+                <div class="col-lg-9" >
+                    
+                    <input type="radio" id= "25" value="25" th:field="${cursada.porcentaje}" th:required="true">
+                    <label for="25">25</label>
+                    
+                    <input type="radio" id= "50" value="50" th:field="${cursada.porcentaje}" th:required="true">
+                    <label for="50">50</label>
+                    
+                    <input type="radio" id= "100" value="100" th:field="${cursada.porcentaje}" th:required="true">
+                    <label for="100">100</label>
+                    
+                </div>
+            </div>
+    
+        <div class="form-group row">
+            <label class="col-lg-3 col-form-label form-control-label">Con proyector</label>
+            <div class="col-lg-9">
+                <input type="radio" id= "false" value="false" th:field="${cursada.conProyector}" th:required="true">
+                <label for="false">No</label>
+                
+                <input type="radio" id= "true" value="true" th:field="${cursada.conProyector}" th:required="true">
+                <label for="true">Si</label>
+                 
+            </div>
+        </div>
+    
+         <div class="form-group row">
+            <label class="col-lg-3 col-form-label form-control-label">Descripcion</label>
+            <div class="col-lg-9">
+                <input class="form-control" type="text" th:field="${cursada.descripcion}" >
+            </div>
+        </div>
+    
+    
+        <div class="form-group row">
+            <div class="col-lg-12 text-center">
+                <input type="reset" class="btn btn-primary" value="Cancel">
+                <input id="submit" type="submit" class="btn btn-primary" value="Save Changes"> 
+            </div>
+        </div>
+        
+        <div class="alert-danger" th:if="${formErrorMessage}" th:text="${formErrorMessage}">Error Message</div>
+        
+    </form>
+ <script>
+  var cursadaform = document.getElementById("formcursada")
+  var cursadaparrafo = document.getElementById("cursadawarnings")
+  var cursadaparrafo1 = document.getElementById("cursadawarnings1")
+  var cursadafechaInicio = document.getElementById("fechaInicio");
+  var cursadafechaFin = document.getElementById("fechaFin");
+  var cursadainicio = new Date();
+  var cursadafin = new Date();
+  var cursadahoy = new Date();
+  var cursadacheckInicio = 0;
+  var cursadatiempoInicio = 0;
+  var cursadatiempoFin = 0;
+  var cursadadiferencia = 0;
+  var cursadadias = 0;
+  var cursadadias2 = 0;
+  var cursadadias3 = 0;
+
+  window.addEventListener('load', function () {
+
+
+    fechaInicio.addEventListener('change', function () {
+      console.log(this.valueAsDate);
+      cursadainicio = this.valueAsDate;
+      cursadatiempoInicio = cursadainicio.getTime();
+
+      cursadacheckInicio = cursadatiempoInicio - cursadahoy;
+      cursadadias2 = (cursadacheckInicio / (1000 * 60 * 60 * 24));
+
+      let cursadawarnings1 = ""
+      let cursadaentrar1 = false
+      cursadaparrafo1.innerHTML = ""
+
+      if (cursadadias2 < 0) {
+        cursadawarnings1 += `Las fechas deben ser posterior a la actual <br>`
+        cursadaentrar1 = true
+      }
+
+      if (cursadaentrar1) {
+        cursadaparrafo1.innerHTML = cursadawarnings1
+      } else {
+        cursadaparrafo1.innerHTML = ""
+      }
+    });
+
+    
+      fechaFin.addEventListener('change', function () {
+        console.log(this.valueAsDate);
+        cursadafin = this.valueAsDate;
+        cursadatiempoFin = cursadafin.getTime();
+
+        cursadacheckFin = cursadatiempoFin - cursadahoy;
+        cursadadias3 = (cursadacheckFin / (1000 * 60 * 60 * 24));
+
+        let cursadawarnings = ""
+        let cursadaentrar = false
+        cursadaparrafo.innerHTML = ""
+
+        if (cursadadias3 < 0) {
+          cursadawarnings += `Las fechas deben ser posterior a la actual <br>`
+          cursadaentrar = true
+        }
+
+        if (cursadaentrar) {
+          cursadaparrafo.innerHTML = cursadawarnings
+        } else {
+          cursadaparrafo.innerHTML = ""
+        }
+      });
+
+      fechaFin.addEventListener("change", e => {
+
+
+        cursadadiferencia = cursadatiempoFin - cursadatiempoInicio;
+        cursadadias = (cursadadiferencia / (1000 * 60 * 60 * 24));
+
+
+        e.preventDefault()
+        let cursadawarnings = ""
+        let cursadaentrar = false
+        cursadaparrafo.innerHTML = ""
+
+        if (cursadadias < 110) {
+          cursadawarnings += `La cursada debe durar al menos 15 semanas <br>`
+          cursadaentrar = true
+        }
+
+        if (cursadaentrar) {
+          cursadaparrafo.innerHTML = cursadawarnings
+        } else {
+          cursadaparrafo.innerHTML = ""
+        	  enviar();
+        }
+      })
+    })
+  
+</script>
+</body>
+</html>

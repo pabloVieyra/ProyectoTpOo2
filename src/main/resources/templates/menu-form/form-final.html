@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Gestion aulas</title>
+
+    <!--JQUERY-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- FRAMEWORK BOOTSTRAP para el estilo de la pagina-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+
+    <!-- Los iconos tipo Solid de Fontawesome-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+    <script src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+
+    <!-- Nuestro css-->
+    <link rel="stylesheet" type="text/css" href="/form.css" th:href="@{/css/form.css}">
+
+</head>
+
+<body>
+    <form class="form" role="form" id="formfinal" autocomplete="off" th:action="@{/formfinal}" th:object="${fin}" method="post">
+
+        <div class="form-group row">
+            <label class="col-lg-3 col-form-label form-control-label">Materias</label>
+            <div class="col-lg-9">
+                <select class="form-control" th:field="${fin.materia}">
+                    <option th:each="materia:${materias}" th:value="${materia.id}" th:text="|${materia.name} - ${materia.carrera.name}|" required>
+                    </option>
+                    <div class="alert-danger" th:if="${#fields.hasErrors('materia')}" th:errors="*{materia}">materia
+                        Error</div>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-lg-3 col-form-label form-control-label">Cantidad de estudiantes</label>
+            <div class="col-lg-9">
+                <input class="form-control" type="number" min="1" th:field="${fin.cantEstudiantes}" required>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-lg-3 col-form-label form-control-label">Turno</label>
+            <div class="col-lg-9">
+
+                <input type="radio" id="mañana" value="maniana" th:field="${fin.turno}" required>
+                <label for="mañana">Mañana</label>
+
+                <input type="radio" id="tarde" value="tarde" th:field="${fin.turno}" required>
+                <label for="tarde">Tarde</label>
+
+                <input type="radio" id="noche" value="noche" th:field="${fin.turno}" required>
+                <label for="noche">Noche</label>
+
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-lg-3 col-form-label form-control-label">Fecha</label>
+            <div class="col-lg-9">
+                <input class="form-control" id="fechafinal" type="date" th:field="${fin.fecha}" required>
+                <p class="alert-danger" id="finalwarnings"></p>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-lg-3 col-form-label form-control-label">Tipo de aula</label>
+            <div class="col-lg-9">
+
+                <input type="radio" id="taller" value="taller" th:field="${fin.tipoAula}" required>
+                <label for="taller">Taller</label>
+
+                <input type="radio" id="tradicional" value="tradicional" th:field="${fin.tipoAula}" required>
+                <label for="tradicional">Tradicional</label>
+
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-lg-3 col-form-label form-control-label">Con proyector</label>
+            <div class="col-lg-9">
+                <input type="radio" id="false" value="false" th:field="${fin.conProyector}" required>
+                <label for="false">No</label>
+
+                <input type="radio" id="true" value="true" th:field="${fin.conProyector}" required>
+                <label for="true">Si</label>
+
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-lg-3 col-form-label form-control-label">Descripcion</label>
+            <div class="col-lg-9">
+                <input class="form-control" type="text" th:field="${fin.descripcion}">
+
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-lg-12 text-center">
+                <input type="reset" class="btn btn-primary" value="Cancel">
+                <input type="submit" class="btn btn-primary" value="Save Changes">
+            </div>
+        </div>
+        <div class="alert-danger" th:if="${formErrorMessage}" th:text="${formErrorMessage}">Error Message</div>
+    </form>
+    <script>
+        var finalform = document.getElementById("formfinal")
+        var finalparrafo = document.getElementById("finalwarnings")
+        var finalfechaInicio = document.getElementById("fechafinal");
+        var finalinicio = new Date();
+        var finalhoy = new Date();
+        var finaltiempoInicio = 0;
+        var finaldiferencia = 0;
+        var finaldias = 0;
+
+
+        window.addEventListener('load', function () {
+
+
+            fechafinal.addEventListener('change', function () {
+                console.log(this.valueAsDate);
+                finalinicio = this.valueAsDate;
+                finaltiempoInicio = finalinicio.getTime();
+
+                finalcheckInicio = finaltiempoInicio - finalhoy;
+                finaldias = (finalcheckInicio / (1000 * 60 * 60 * 24));
+
+                let finalwarnings = ""
+                let finalentrar = false
+                finalparrafo.innerHTML = ""
+
+                if (finaldias < 0) {
+                    finalwarnings += `Las fechas deben ser posterior a la actual <br>`
+                    finalentrar = true
+                }
+
+                if (finalentrar) {
+                    finalparrafo.innerHTML = finalwarnings
+                } else {
+                    finalparrafo.innerHTML = ""
+                }
+
+            });
+        })
+    </script>
+
+</body>
+
+</html>
