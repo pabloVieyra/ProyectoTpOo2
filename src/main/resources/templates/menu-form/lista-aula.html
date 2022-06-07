@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--JQUERY-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- DATA TABLE -->
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">	
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+   <link rel="stylesheet" type="text/css" href="/form.css" th:href="@{/css/form.css}">
+    <title>Gestion de aulas</title>
+</head>
+	<body>
+	<h1>Cargado con exito!</h1>
+		<div class="table-responsive">
+			<table id="modePedido" class="table table-bordered table-hover table-striped">
+				<thead class="thead-light">
+		             <tr>
+		                <th scope="col">Edificio</th>
+		                <th scope="col">Aula</th>
+		              </tr>
+				</thead>
+				<tbody>
+		            <tr class= "contenidoTabla">
+		            	<th th:text="${aula}"></th>
+		            	<th th:text="${edificio}"></th>
+		             </tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+	
+</html>
