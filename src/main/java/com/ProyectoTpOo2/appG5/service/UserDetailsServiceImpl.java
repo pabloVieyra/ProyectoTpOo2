@@ -16,23 +16,24 @@ import com.ProyectoTpOo2.appG5.repository.UserRepository;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    UserRepository userRepository;
-	
-    @Override
-     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		
-    
-     com.ProyectoTpOo2.appG5.entity.User appUser = 
-    		 userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("No existe usuario"));
-		
-     List grantList = new ArrayList();
-    for (Role role: appUser.getRoles()) {
-        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role.getName());
-            grantList.add(grantedAuthority);
-    }
-		
-    UserDetails user = (UserDetails) new User(appUser.getUsername(), appUser.getPassword(), grantList);
-         return user;
-    }
+	@Autowired
+	UserRepository userRepository;
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+		com.ProyectoTpOo2.appG5.entity.User appUser =
+
+				userRepository.findByUsername(username)
+						.orElseThrow(() -> new UsernameNotFoundException("No existe usuario"));
+
+		List grantList = new ArrayList();
+		for (Role role : appUser.getRoles()) {
+			GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role.getName());
+			grantList.add(grantedAuthority);
+		}
+
+		UserDetails user = (UserDetails) new User(appUser.getUsername(), appUser.getPassword(), grantList);
+		return user;
+	}
 }
