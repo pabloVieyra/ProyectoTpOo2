@@ -41,14 +41,14 @@
 				<tbody>
 				          <tr class= "contenidoTabla" th:each= "cursada: ${cursadaList}">
 				             	<th th:text="${cursada.id}"></th>
-				             	<th th:text="${cursada.aprobado}"></th>
+				             	<th th:text="${cursada.aprobado}? 'Aprobado':'En espera'"></th>
 				                <th th:text="${cursada.curso.materia.name}"></th>
 				                <th th:text="${cursada.curso.codCurso}"></th>
 				                <th th:text="${cursada.fechaInicio}"></th>
 				                <th th:text="${cursada.fechaFin}"></th>
 				                <th th:text="${cursada.curso.cantEstudiantes}"></th>
 				                <th th:text="${cursada.tipoAula}"></th>
-				                <th th:text="${cursada.conProyector}"></th>
+				                <th th:text="${cursada.conProyector} ? 'Si':'No'"></th>
 				                <th th:text="${cursada.descripcion}"></th>
 				      	<th>
 							<a th:href="@{/listacursada/borrar/} + ${cursada.id}"><img src="/img/eliminar.png"></a>
