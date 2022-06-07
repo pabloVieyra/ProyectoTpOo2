@@ -23,7 +23,7 @@ public class EspacioImpl implements EspacioService{
 	
 	//si no existe genera espacio para un aula y una fecha especifica
 	public Espacio agregar(LocalDate fecha, String turno, boolean libre, Aula aula)throws Exception{
-		if(espacioRepository.traerEspacio(fecha, turno, aula) != null)throw new Exception("Error: no hay espacio disponible");
+		//if(espacioRepository.traerEspacio(fecha, turno, aula) != null)throw new Exception("Error: no hay espacio disponible");
 		Espacio espacio = new Espacio( fecha,  turno, libre, aula);
 		espacioRepository.save(espacio);
 	return espacio;

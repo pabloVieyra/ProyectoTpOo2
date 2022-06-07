@@ -10,19 +10,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import com.tpEj.app.entity.Cursada;
-import com.tpEj.app.entity.Final;
-import com.tpEj.app.helpers.ViewRouteHelper;
-import com.tpEj.app.model.ModelPedido;
-import com.tpEj.app.repository.CarreraRepository;
-import com.tpEj.app.repository.CursoRepository;
-import com.tpEj.app.repository.MateriaRepository;
-import com.tpEj.app.repository.NotaPedidoRepository;
-import com.tpEj.app.service.AulaService;
-import com.tpEj.app.service.CursadaService;
-import com.tpEj.app.service.EdificioService;
-import com.tpEj.app.service.EspacioService;
-import com.tpEj.app.service.FinalService;
+import com.ProyectoTpOo2.appG5.entity.Cursada;
+import com.ProyectoTpOo2.appG5.entity.Final;
+import com.ProyectoTpOo2.appG5.helpers.ViewRouteHelper;
+import com.ProyectoTpOo2.appG5.model.ModelPedido;
+import com.ProyectoTpOo2.appG5.repository.CarreraRepository;
+import com.ProyectoTpOo2.appG5.repository.CursoRepository;
+import com.ProyectoTpOo2.appG5.repository.MateriaRepository;
+import com.ProyectoTpOo2.appG5.repository.NotaPedidoRepository;
+import com.ProyectoTpOo2.appG5.service.AulaService;
+import com.ProyectoTpOo2.appG5.service.CursadaService;
+import com.ProyectoTpOo2.appG5.service.EdificioService;
+import com.ProyectoTpOo2.appG5.service.EspacioService;
+import com.ProyectoTpOo2.appG5.service.FinalService;
 
 
 
