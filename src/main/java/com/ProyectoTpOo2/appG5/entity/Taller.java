@@ -13,6 +13,9 @@ public class Taller extends Aula{
 	private int cantPc;
 	
 	@Column 
+	private boolean tieneProyector;
+	
+	@Column 
 	private int cantSillas;
 
 	public Taller() {
@@ -34,12 +37,26 @@ public class Taller extends Aula{
 	public void setCantSillas(int cantSillas) {
 		this.cantSillas = cantSillas;
 	}
+	
+	public boolean isTieneProyector() {
+		return tieneProyector;
+	}
+
+	public void setTieneProyector(boolean tieneProyector) {
+		this.tieneProyector = tieneProyector;
+	}
 
 	@Override
 	public String toString() {
 		return "Taller [cantPc=" + cantPc + ", cantSillas=" + cantSillas + "]";
 	}
 		
+	 //para validar en espacio 
+	public void esValida(int cantEstudiantes, boolean conProyector) throws Exception {
+		if (this.getCantSillas() < cantEstudiantes && conProyector != this.tieneProyector)
+			throw new Exception("El aula pedida no cuenta con la capacidad");
+		
+	}
 	
 }
 
