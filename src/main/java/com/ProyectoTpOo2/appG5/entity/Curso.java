@@ -14,8 +14,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -27,25 +25,23 @@ public class Curso {
 	private Long id;
 	
 	@Column 
-	@NotNull
 	private int codCurso;
 	
 	@Column 
-	@NotNull
 	private int cantEstudiantes;
 	
 	@Column 
-	@NotBlank
-	private char turno;
+	private String turno;
+	
 	
 	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	private Materia materia;
 
-	
+
 	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     private Set<Profesor> profesores = new HashSet<>();
 	
-	@OneToOne(optional = false, cascade = CascadeType.MERGE)  
+	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY, mappedBy = "curso")
     private Cursada cursada;
 
 	
@@ -84,12 +80,12 @@ public class Curso {
 	}
 
 
-	public char getTurno() {
+	public String getTurno() {
 		return turno;
 	}
 
 
-	public void setTurno(char turno) {
+	public void setTurno(String turno) {
 		this.turno = turno;
 	}
 
@@ -127,7 +123,7 @@ public class Curso {
 	@Override
 	public String toString() {
 		return "Curso [id=" + id + ", codCurso=" + codCurso + ", cantEstudiantes=" + cantEstudiantes + ", turno="
-				+ turno + ", materia=" + materia + ", profesores=" + profesores + ", cursada=" + cursada + "]";
+				+ turno + "]";
 	}
 
 
@@ -137,19 +133,10 @@ public class Curso {
 	}
 
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Curso other = (Curso) obj;
-		return cantEstudiantes == other.cantEstudiantes && codCurso == other.codCurso
-				&& Objects.equals(cursada, other.cursada) && Objects.equals(id, other.id)
-				&& Objects.equals(materia, other.materia) && Objects.equals(profesores, other.profesores)
-				&& turno == other.turno;
+	
+	public boolean equals(Curso curso) {
+		boolean igual = false;
+		if(this.id == curso.getId() || this.codCurso == curso.getCodCurso()) igual = true;
+		return igual;
 	}
-
 }

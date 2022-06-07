@@ -11,8 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 
 @Entity
@@ -21,20 +21,20 @@ public class Final extends NotaPedido{
 	
 
 	@Column 
-	@NotBlank
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate fecha;
 	
 	@Column 
-	@NotNull
 	private int cantEstudiantes;
 	
 	@Column 
-	@NotBlank
-	private char turno;
+	private String turno;
+	
 	
 	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	private Materia materia;
 
+	
 	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     private Set<Profesor> profesores = new HashSet<>();
 	
@@ -58,11 +58,11 @@ public class Final extends NotaPedido{
 		this.cantEstudiantes = cantEstudiantes;
 	}
 
-	public char getTurno() {
+	public String getTurno() {
 		return turno;
 	}
 
-	public void setTurno(char turno) {
+	public void setTurno(String turno) {
 		this.turno = turno;
 	}
 

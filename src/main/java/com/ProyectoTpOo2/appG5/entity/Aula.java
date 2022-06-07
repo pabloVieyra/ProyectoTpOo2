@@ -1,5 +1,6 @@
 package com.ProyectoTpOo2.appG5.entity;
 
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,7 +14,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+
+
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -24,14 +26,19 @@ public class Aula {
 	private Long id;
 	
 	@Column 
-	@NotNull
 	private int numAula;
 
+	
 	@OneToMany(cascade=CascadeType.PERSIST,fetch=FetchType.LAZY,mappedBy="id")
+	
 	private Set<Espacio> espacio;
+	
 	
 	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	private Edificio edificio;
+	
+	@OneToMany(cascade=CascadeType.PERSIST,fetch=FetchType.LAZY,mappedBy="id")
+	private Set<NotaPedido> notaPedido;
 	
 	public Aula() {
 		super();
@@ -68,11 +75,35 @@ public class Aula {
 	public void setEdificio(Edificio edificio) {
 		this.edificio = edificio;
 	}
+	
+	public Set<NotaPedido> getNotaPedido() {
+		return notaPedido;
+	}
+
+	public void setNotaPedido(Set<NotaPedido> notaPedido) {
+		this.notaPedido = notaPedido;
+	}
 
 	@Override
 	public String toString() {
-		return "Aula [id=" + id + ", numAula=" + numAula + ", espacio=" + espacio
-				+ ", edificio=" + edificio + "]";
+		return "Aula [id=" + id + ", numAula=" + numAula + "]";
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, numAula);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Aula other = (Aula) obj;
+		return Objects.equals(id, other.id) && numAula == other.numAula;
+	}	
+	
 }

@@ -12,8 +12,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "profesor")
@@ -23,20 +24,19 @@ public class Profesor {
 	private Long id;
 	
 	@Column 
-	@NotBlank
 	private String nombre;
 	
-	@Column 
-	@NotBlank
+	@Column
 	private String apellido;
 	
 	@Column 
-	@NotNull
 	private Long dni;
 
+	@JsonIgnore
 	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="profesores")
 	private Set<Curso> cursos= new HashSet<>();
 	
+	@JsonIgnore
 	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="profesores")
 	private Set<Final> finales= new HashSet<>();
 
@@ -116,9 +116,6 @@ public class Profesor {
 	public void setFinales(Set<Final> finales) {
 		this.finales = finales;
 	}
-
-	
-	
     
     
 }
