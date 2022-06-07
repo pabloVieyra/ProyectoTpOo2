@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.ProyectoTpOo2.appG5.entity.Aula;
 import com.ProyectoTpOo2.appG5.entity.Edificio;
+import com.ProyectoTpOo2.appG5.repository.AulaRepository;
+import com.ProyectoTpOo2.appG5.repository.EspacioRepository;
 
 @Service
 @Transactional
