@@ -50,32 +50,29 @@ public class EspacioImpl implements EspacioService{
 	
 	
 	public Espacio traerEspacio(LocalDate fecha, String turno, Aula aula){
-		return espacioRepository.findEspacioByFechaAndTurnoAndAula(fecha, turno,aula);
+		return espacioRepository.findEspacio(fecha, turno,aula.getId(),true);
 	}
 
 	
-	public int CrearEspaciosFinal(Aula aula, boolean conProyector, String tipoAula,int cantEstudiantes, String turno, LocalDate fecha) throws Exception {
-	 //el booleano es para corroborar que el aula sea del tipo pedido
+	public int CrearEspaciosFinal(Aula aula, boolean conProyector, String tipoAula, int cantEstudiantes, String turno, LocalDate fecha) throws Exception {
+		Espacio espacio = new Espacio();
 		boolean taller = false; 
 		boolean carga = false;
 		if(tipoAula.equalsIgnoreCase("Taller")) {taller=true;}
 			if((aula instanceof Taller) && taller) {
 				if(((Taller)aula).getCantSillas() < cantEstudiantes) throw new Exception("El aula pedida no cuenta con la capacidad");
-					Espacio espacio = traerEspacio(fecha, turno, aula);
-						if(espacio != null)throw new Exception("El aula no esta disponible");
+					   espacio = traerEspacio(fecha, turno, aula);
+						if(espacio == null)throw new Exception("El aula no esta disponible");
 							espacio.setLibre(false);
 							espacioRepository.save(espacio);
 			}else {
 				if(((Tradicional)aula).getCantBancos() < cantEstudiantes && ((Tradicional)aula).isTieneProyector() != conProyector) throw new Exception("El aula pedida no cuenta con lo requerido");
-					Espacio espacio = traerEspacio(fecha, turno, aula);
+					 espacio = traerEspacio(fecha, turno, aula);
 					if(espacio == null)throw new Exception("El aula no esta disponible");
 					espacio.setLibre(carga);
 					espacioRepository.save(espacio);
 			}
 		return aula.getNumAula();
 	}
-
-	
-	
-	
-}
+		
+	}

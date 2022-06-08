@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.ProyectoTpOo2.appG5.entity.Cursada;
+import com.ProyectoTpOo2.appG5.entity.Edificio;
 import com.ProyectoTpOo2.appG5.entity.Final;
+import com.ProyectoTpOo2.appG5.entity.NotaPedido;
 import com.ProyectoTpOo2.appG5.helpers.ViewRouteHelper;
 import com.ProyectoTpOo2.appG5.model.ModelPedido;
 import com.ProyectoTpOo2.appG5.repository.CarreraRepository;
@@ -144,18 +146,16 @@ public class RegisterController {
 	
 	@PostMapping("/formaula")
 	public String formAulas(@Valid @ModelAttribute("modelPedido")ModelPedido modelPedido, BindingResult result, ModelMap model){
-		 
+		 NotaPedido pedido = modelPedido.getNotaPedido();
 		  String ruta = "menu-form/lista-aula";
 			    	if(modelPedido.getNotaPedido() instanceof Final) {
 			    		try {
-			    			espacioService.CrearEspaciosFinal(  modelPedido.getAula(), modelPedido.getNotaPedido().isConProyector(),  modelPedido.getNotaPedido().getTipoAula(),((Final)modelPedido.getNotaPedido()).getCantEstudiantes(), 
-				    				((Final)modelPedido.getNotaPedido()).getTurno(), ((Final)modelPedido.getNotaPedido()).getFecha());
-			    			
-			    			modelPedido.getNotaPedido().setAprobado(true);
-			    			notaPedidoService.crearNotaPedido(modelPedido.getNotaPedido());
+			    			espacioService.CrearEspaciosFinal(  modelPedido.getAula(), pedido.isConProyector(),  pedido.getTipoAula(),((Final)pedido).getCantEstudiantes(), 
+				    				((Final)pedido).getTurno(), ((Final)pedido).getFecha());
+			    			pedido.setAprobado(true);
+			    			notaPedidoService.actualizarNotaPedido(pedido);
 			    		} catch (Exception e) {
 							model.addAttribute("listErrorMessage", e.getMessage());
-							ruta="redirect:/menu-form/errorcarga";
 						}
 			    		
 			    	}else{//cursada
@@ -163,6 +163,7 @@ public class RegisterController {
 			    	}	
 		
 			    	model.addAttribute("modelPedido", modelPedido);
+			    	ruta = "menu";
 		 return ruta;
 	}
 	
@@ -195,6 +196,39 @@ public class RegisterController {
 		}
 		return listacursada(model);
 	}
+	
+	@GetMapping("/listaedificios")
+	public String listaedificios(Model model) {
+			model.addAttribute("edificiosList", edificioService.getEdificioEnOrden());
+		return "menu-form/lista-edificio";
+	}
+	
+	@GetMapping("/listaedificios/editar/{id}")
+	public String edificioEditar(Model model, @PathVariable(name="id")Long id){
+		Edificio edificio=edificioService.buscarPorId(id);
+		model.addAttribute("edificio",edificio);
+
+		 return "menu-form/form-edificio";
+	}
+	
+	@PostMapping("/listaedificios/editar/{id}")
+	public String formedificioEditar(@Valid @ModelAttribute("edificio")Edificio edificio, BindingResult result, ModelMap model){
+		
+		  if(result.hasErrors()) { 
+			  model.addAttribute("edificio", edificio);			  
+		  }else {
+			  try {
+				  edificio=edificioService.actualizar(edificio);
+			} catch (Exception e) {
+				model.addAttribute("listErrorMessage", e.getMessage());
+				e.printStackTrace();
+			}
+		  } 
+		model.addAttribute("edificiosList", edificioService.getEdificioEnOrden());
+
+		  return "menu-form/lista-edificio";
+	}
+	
 	
 }
 

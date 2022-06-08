@@ -13,4 +13,6 @@ public interface NotaPedidoService {
 	public List<NotaPedido> TraerNotaPedidos();
 	
 	public NotaPedido crearNotaPedido(NotaPedido notaPedido);
+	
+	public NotaPedido actualizarNotaPedido(NotaPedido notaPedido);
 }

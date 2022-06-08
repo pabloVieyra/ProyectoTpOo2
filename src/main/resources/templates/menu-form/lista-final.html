@@ -38,24 +38,24 @@
 		                <th scope="col">Aula</th>
 		                <th scope="col">Descripcion</th>
 		                <th scope="col"></th>
+
 		              </tr>
 				</thead>
 				<tbody>
 		            <tr class= "contenidoTabla" th:each= "final: ${finalesList}">
 		            	<th th:text="${final.id}"></th>
-		            	<th th:text="${final.aprobado}"></th>
+		            	<th th:text="${final.aprobado} ? 'Aprobado':'En espera'"></th>
 		                <th th:text="${final.materia.carrera.name}"></th>
 		                <th th:text="${final.materia.name}"></th>
 						<th th:text="${final.cantEstudiantes}"></th>
 						<th th:text="${final.turno}"></th>
 						<th th:text="${final.fecha}"></th>
 						<th th:text="${final.tipoAula}"></th>
-						<th th:text="${final.conProyector}"></th>
+						<th th:text="${final.conProyector} ? 'Si':'No'"></th>
 						<th></th>
 						<th th:text="${final.descripcion}"></th>  
-						<th>
-							<a th:href="@{/listafinal/borrar/} + ${final.id}"><img src="/img/eliminar.png"></a>
-						</th>
+						<th><a th:href="@{/listafinal/borrar/} + ${final.id}"><img src="/img/eliminar.png"></a></th>
+
 		             </tr>
 				</tbody>
 			</table>
