@@ -16,7 +16,7 @@ public interface EspacioService {
 	
 	public int CrearEspaciosFinal(Aula aula, boolean conProyector, String tipoAula,int cantEstudiantes, String turno, LocalDate fecha) throws Exception;
 	
-	public int CrearEspaciosCursada(Aula aula, boolean conProyector, String tipoAula,int cantEstudiantes, String turno, LocalDate inicio, LocalDate fin, int porcentaje) throws Exception;
+	public List<LocalDate> CrearEspaciosCursada(Aula aula, boolean conProyector, String tipoAula,int cantEstudiantes, String turno, LocalDate inicio, LocalDate fin, int porcentaje) throws Exception;
 
 	public List<Espacio> traerEspacios();
 

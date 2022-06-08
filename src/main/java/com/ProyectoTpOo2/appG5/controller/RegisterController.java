@@ -1,5 +1,8 @@
 package com.ProyectoTpOo2.appG5.controller;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -148,7 +151,8 @@ public class RegisterController {
 	@PostMapping("/formaula")
 	public String formAulas(@Valid @ModelAttribute("modelPedido")ModelPedido modelPedido, BindingResult result, ModelMap model){
 		NotaPedido pedido = modelPedido.getNotaPedido();
-			    	if(modelPedido.getNotaPedido() instanceof Final) {
+		String url = "menu-form/lista-aula";    	
+		if(modelPedido.getNotaPedido() instanceof Final) {
 			    		try {
 			    			espacioService.CrearEspaciosFinal(  modelPedido.getAula(), 
 			    					pedido.isConProyector(),  
@@ -170,26 +174,27 @@ public class RegisterController {
 			    	}else{
 			    		
 			    		try {
-			    			espacioService.CrearEspaciosCursada( modelPedido.getAula(),
+			    			model.addAttribute("aularespuesta",espacioService.CrearEspaciosCursada( modelPedido.getAula(),
 			    					pedido.isConProyector(), 
 			    					pedido.getTipoAula(),
 				    				((Cursada)pedido).getCurso().getCantEstudiantes(),
 				    				((Cursada)pedido).getCurso().getTurno(), 
 				    				((Cursada)pedido).getFechaInicio(),
 				    				((Cursada)pedido).getFechaFin(), 
-				    				((Cursada)pedido).getPorcentaje());
+				    				((Cursada)pedido).getPorcentaje()));
 			    			model.addAttribute("aularespuesta",aulaService.traerPorId(modelPedido.getAula().getId()));
 			    			model.addAttribute("modelPedido", modelPedido);
 					    	//model.addAttribute("fechas", ((Cursada)pedido).getFecha()); crear query para traer los espacios por aula , dias, turno
 					    	pedido.setAprobado(true);
 			    			pedido.setAula(modelPedido.getAula());
 			    			notaPedidoService.actualizarNotaPedido(pedido);
+			    			url = "menu-form/lista-aula-cursada";
 				    	} catch (Exception e) {
 						
 						}
 			    	}	
 			    	
-		 return "menu-form/lista-aula";
+		 return url;
 	}
 	
 	@GetMapping("/listaaula")

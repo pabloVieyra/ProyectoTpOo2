@@ -85,8 +85,9 @@ public class EspacioImpl implements EspacioService{
 	}
 	
 	@Override
-	public int CrearEspaciosCursada(Aula aula, boolean conProyector, String tipoAula, int cantEstudiantes, String turno,
+	public List<LocalDate> CrearEspaciosCursada(Aula aula, boolean conProyector, String tipoAula, int cantEstudiantes, String turno,
 			LocalDate inicio, LocalDate fin, int porcentaje) throws Exception {
+		List<LocalDate> fechas = new ArrayList<LocalDate>();
 		if(porcentaje==25) {
 			CrearEspacios( aula,  conProyector,  tipoAula,  cantEstudiantes,  turno,  inicio.plusDays(56));
 			CrearEspacios( aula,  conProyector,  tipoAula,  cantEstudiantes,  turno,  inicio.plusDays(105));
@@ -98,23 +99,27 @@ public class EspacioImpl implements EspacioService{
 			espaciosCompletoCursada( aula,  conProyector,  tipoAula,  cantEstudiantes,  turno, inicio,  fin,  porcentaje);
 		}
 		
-		return aula.getNumAula();
+		return fechas;
 	}
 	
-	public void espaciosMitadCursada(Aula aula, boolean conProyector, String tipoAula, int cantEstudiantes, String turno,
+	public List<LocalDate> espaciosMitadCursada(Aula aula, boolean conProyector, String tipoAula, int cantEstudiantes, String turno,
 			LocalDate inicio, LocalDate fin, int porcentaje) throws Exception{
+		List<LocalDate> fechas = new ArrayList<LocalDate>();
 		while(inicio.isBefore(fin.plusDays(1))){	
 			CrearEspacios( aula,  conProyector,  tipoAula,  cantEstudiantes,  turno,  inicio.plusDays(14));	
 			inicio = inicio.plusDays(14);
-		}		
+		}	
+		return fechas;
 	}
 	
-	public void espaciosCompletoCursada(Aula aula, boolean conProyector, String tipoAula, int cantEstudiantes, String turno,
+	public List<LocalDate> espaciosCompletoCursada(Aula aula, boolean conProyector, String tipoAula, int cantEstudiantes, String turno,
 			LocalDate inicio, LocalDate fin, int porcentaje) throws Exception{
+		List<LocalDate> fechas = new ArrayList<LocalDate>();
 		while(inicio.isBefore(fin.plusDays(1))){	
-			CrearEspacios( aula,  conProyector,  tipoAula,  cantEstudiantes,  turno,  inicio.plusDays(14));
-			inicio = inicio.plusDays(14);
-		}		
+			CrearEspacios( aula,  conProyector,  tipoAula,  cantEstudiantes,  turno,  inicio.plusDays(1));
+			inicio = inicio.plusDays(1);
+		}
+		return fechas;
 	}
 	
 	
