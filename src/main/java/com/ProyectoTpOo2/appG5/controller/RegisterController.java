@@ -69,13 +69,11 @@ public class RegisterController {
 		return ViewRouteHelper.MENU;
 	}
 	
-
 	@GetMapping("/listafinal")
 	public String listafinal(Model model) {
 			model.addAttribute("finalesList", finalService.getfinalesActivos());
 		return "menu-form/lista-final";
 	}
-	
 	
 	@GetMapping("/formfinal")
 	public String formfinal(Model model){
@@ -83,8 +81,6 @@ public class RegisterController {
 		model.addAttribute("materias", materiaRepository.findAll());
 		 return "menu-form/form-final";
 	}
-	
-	
 	
 	@PostMapping("/formfinal")
 	public String formfinal(@Valid @ModelAttribute("fin")Final fin, BindingResult result, ModelMap model){
@@ -104,21 +100,18 @@ public class RegisterController {
 		 return "menu-form/lista-final";
 	}
 	
-	
 	@GetMapping("/listacursada")
 	public String listacursada(Model model) {
 			model.addAttribute("cursadaList", cursadaService.getCursadasActivas());
 		return "menu-form/lista-cursada";
 	}
 		
-	
 	@GetMapping("/formcursada")
 	public String formCursada(Model model){
 		model.addAttribute("cursada", new Cursada());
 		model.addAttribute("cursos", cursoRepository.findByCursadaIsNull());	
 		 return "menu-form/form-cursada";
 	}
-	
 	
 	@PostMapping("/formcursada")
 	public String formCursada(@Valid @ModelAttribute("cursada")Cursada cursada, BindingResult result, ModelMap model){
@@ -133,7 +126,6 @@ public class RegisterController {
 		 return "menu-form/lista-cursada";
 	}
 	
-	
 	@GetMapping("/formaula")
 	public String formAulas(Model model){
 		model.addAttribute("modelPedido", new ModelPedido());
@@ -141,7 +133,6 @@ public class RegisterController {
 		model.addAttribute("nps", notaPedidoService.TraerNotaPedidos());
 		 return "menu-form/form-aula";
 	}
-	
 	
 	@PostMapping("/formaula")
 	public String formAulas(@Valid @ModelAttribute("modelPedido")ModelPedido modelPedido, BindingResult result, ModelMap model){
@@ -166,19 +157,10 @@ public class RegisterController {
 		 return "menu-form/lista-aula";
 	}
 	
-	/*@GetMapping("/formaularespuesta")
-	public String formAulas(Model model, @PathVariable(name="id")Long id){
-		model.addAttribute("aularespuesta",aulaService.traerPorId(id));
-		 return "menu-form/lista-aula";
-	}*/
-	
 	@GetMapping("/listaaula")
 	public String respuesta(Model model) {
 		return "menu-form/lista-aula";
 	}
-	
-	
-	
 	
 	@GetMapping("/listafinal/borrar/{id}")
 	public String borrarFinal(Model model, @PathVariable(name="id")Long id){
