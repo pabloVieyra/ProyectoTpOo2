@@ -61,7 +61,6 @@ public class EspacioImpl implements EspacioService{
 	public int CrearEspacios(Aula aula, boolean conProyector, String tipoAula, int cantEstudiantes, String turno, LocalDate fecha) throws Exception {
 		Espacio espacio = new Espacio();
 		boolean taller = false; 
-		boolean carga = false;
 		if(tipoAula.equalsIgnoreCase("Taller")) {taller=true;}
 			if((aula instanceof Taller) && taller) {
 				((Taller)aula).esValida(cantEstudiantes, conProyector);
@@ -73,7 +72,7 @@ public class EspacioImpl implements EspacioService{
 				((Tradicional)aula).esValida(cantEstudiantes, conProyector);
 					 espacio = traerEspacio(fecha, turno, aula);
 					if(espacio == null)throw new Exception("El aula no esta disponible");
-					espacio.setLibre(carga);
+					espacio.setLibre(false);
 					espacioRepository.save(espacio);
 			}
 		return aula.getNumAula();
@@ -91,12 +90,14 @@ public class EspacioImpl implements EspacioService{
 		if(porcentaje==25) {
 			CrearEspacios( aula,  conProyector,  tipoAula,  cantEstudiantes,  turno,  inicio.plusDays(56));
 			CrearEspacios( aula,  conProyector,  tipoAula,  cantEstudiantes,  turno,  inicio.plusDays(105));
+		fechas.add(inicio.plusDays(56));
+		fechas.add(inicio.plusDays(105));
 		}
 		if(porcentaje==50) {
-			espaciosMitadCursada( aula,  conProyector,  tipoAula,  cantEstudiantes,  turno, inicio,  fin,  porcentaje);
+			fechas= espaciosMitadCursada( aula,  conProyector,  tipoAula,  cantEstudiantes,  turno, inicio,  fin,  porcentaje);
 		}
 		if(porcentaje==100) {
-			espaciosCompletoCursada( aula,  conProyector,  tipoAula,  cantEstudiantes,  turno, inicio,  fin,  porcentaje);
+			fechas= espaciosCompletoCursada( aula,  conProyector,  tipoAula,  cantEstudiantes,  turno, inicio,  fin,  porcentaje);
 		}
 		
 		return fechas;
@@ -108,6 +109,7 @@ public class EspacioImpl implements EspacioService{
 		while(inicio.isBefore(fin.plusDays(1))){	
 			CrearEspacios( aula,  conProyector,  tipoAula,  cantEstudiantes,  turno,  inicio.plusDays(14));	
 			inicio = inicio.plusDays(14);
+			fechas.add(inicio);
 		}	
 		return fechas;
 	}
@@ -118,6 +120,7 @@ public class EspacioImpl implements EspacioService{
 		while(inicio.isBefore(fin.plusDays(1))){	
 			CrearEspacios( aula,  conProyector,  tipoAula,  cantEstudiantes,  turno,  inicio.plusDays(1));
 			inicio = inicio.plusDays(1);
+			fechas.add(inicio);
 		}
 		return fechas;
 	}

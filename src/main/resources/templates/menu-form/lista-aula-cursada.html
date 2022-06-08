@@ -23,8 +23,8 @@
 			<a type="reset"  href="/menu" class="btn btn-dark "> Volver al Menu</a>
 			
 		</div>
-		<h1 th:text="${aulacursada.id}"></h1>
-		
+		<h1 th:text="${aularespuesta} ? ${aularespuesta.edificio.nombre} : 'Edificio no asignado'"></h1>
+		<h1 th:text="${aularespuesta} ? ${aularespuesta.numAula} : 'Aula no asignado'"></h1>
 		<div class="table-responsive">
 			<table id="aulacursada" class="table table-bordered table-hover table-striped">
 				<thead class="thead-light">
@@ -35,11 +35,11 @@
 		              </tr>
 				</thead>
 				<tbody>
-		            <tr class= "contenidoTabla" th:each= "fecha: ${fechas}">
-		            	
-		            	<th th:text="${fecha}"></th>
-		            	
-		             </tr>
+		          
+		            <ul>
+  						<li th:each="fecha : ${fechas}" th:text="${fecha}"></li>
+					</ul>	
+		            
 				</tbody>
 			</table>
 			<div class="alert alert-danger text-center" th:if="${listErrorMessage}" th:text="${listErrorMessage}">Error Message</div>

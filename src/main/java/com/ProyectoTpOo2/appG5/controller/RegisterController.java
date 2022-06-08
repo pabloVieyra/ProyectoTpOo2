@@ -70,16 +70,16 @@ public class RegisterController {
 	@GetMapping("/menu")
 	public String menu(Model model) {
 		
+		if(espacioService.traerEspacios().isEmpty()) {
 		try {
-			espacioService.agregarEspacioMes(3, 2023, aulaService.traerPorId((long)1));
-			espacioService.agregarEspacioMes(4, 2023, aulaService.traerPorId((long)1));
-			espacioService.agregarEspacioMes(5, 2023, aulaService.traerPorId((long)1));
-			espacioService.agregarEspacioMes(6, 2023, aulaService.traerPorId((long)1));
+			for(int i = 1; i< 13; i++) {
+			espacioService.agregarEspacioMes(12, 2023, aulaService.traerPorId((long)1));	
+			}
 		} catch (Exception e) {
 			model.addAttribute("listErrorMessage", e.getMessage());
 			e.printStackTrace();
 		}
-		
+		}
 		return ViewRouteHelper.MENU;
 	}
 	
@@ -150,9 +150,8 @@ public class RegisterController {
 	
 	@PostMapping("/formaula")
 	public String formAulas(@Valid @ModelAttribute("modelPedido")ModelPedido modelPedido, BindingResult result, ModelMap model){
-		NotaPedido pedido = modelPedido.getNotaPedido();
-		String url = "menu-form/lista-aula";    	
-		if(modelPedido.getNotaPedido() instanceof Final) {
+		NotaPedido pedido = modelPedido.getNotaPedido();	
+		if(pedido instanceof Final) {
 			    		try {
 			    			espacioService.CrearEspaciosFinal(  modelPedido.getAula(), 
 			    					pedido.isConProyector(),  
@@ -174,32 +173,39 @@ public class RegisterController {
 			    	}else{
 			    		
 			    		try {
-			    			model.addAttribute("aularespuesta",espacioService.CrearEspaciosCursada( modelPedido.getAula(),
+			    			 
+			    			List<LocalDate> fechas = espacioService.CrearEspaciosCursada( modelPedido.getAula(),
 			    					pedido.isConProyector(), 
 			    					pedido.getTipoAula(),
 				    				((Cursada)pedido).getCurso().getCantEstudiantes(),
 				    				((Cursada)pedido).getCurso().getTurno(), 
 				    				((Cursada)pedido).getFechaInicio(),
 				    				((Cursada)pedido).getFechaFin(), 
-				    				((Cursada)pedido).getPorcentaje()));
+				    				((Cursada)pedido).getPorcentaje());
+				    				
+				    		model.addAttribute("aularespuesta",fechas);
 			    			model.addAttribute("aularespuesta",aulaService.traerPorId(modelPedido.getAula().getId()));
 			    			model.addAttribute("modelPedido", modelPedido);
-					    	//model.addAttribute("fechas", ((Cursada)pedido).getFecha()); crear query para traer los espacios por aula , dias, turno
 					    	pedido.setAprobado(true);
 			    			pedido.setAula(modelPedido.getAula());
 			    			notaPedidoService.actualizarNotaPedido(pedido);
-			    			url = "menu-form/lista-aula-cursada";
+			    			return "menu-form/lista-aula-cursada";
 				    	} catch (Exception e) {
 						
 						}
 			    	}	
 			    	
-		 return url;
+		 return "menu-form/lista-aula";
 	}
 	
-	@GetMapping("/listaaula")
-	public String respuesta(Model model) {
+	@GetMapping("/listaaulafinal")
+	public String respuestafinal(Model model) {
 		return "menu-form/lista-aula";
+	}
+	
+	@GetMapping("/listaaulacursada")
+	public String respuestacursada(Model model) {
+		return "menu-form/lista-aula-cursada";
 	}
 	
 	@GetMapping("/listafinal/borrar/{id}")
