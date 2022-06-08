@@ -13,4 +13,7 @@ public interface AulaService {
 	public List<Aula> traerPorEdificioEnOrden();
 
 	public Aula getAula(int numAula);
+	
+	public Aula traerPorId(Long id);
+
 }

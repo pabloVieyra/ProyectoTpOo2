@@ -15,6 +15,7 @@ import com.ProyectoTpOo2.appG5.repository.EspacioRepository;
 @Service
 @Transactional
 public class AulaImpl implements AulaService {
+	
 	@Autowired
 	AulaRepository repository;
 
@@ -37,4 +38,10 @@ public class AulaImpl implements AulaService {
 	public List<Aula> traerPorEdificioEnOrden() {
 		return repository.findAllByOrderByEdificioAsc();
 	}
+
+	@Override
+	public Aula traerPorId(Long id) {
+		return repository.findAulaById(id);
+	}
+	
 }

@@ -70,13 +70,11 @@ public class RegisterController {
 		return ViewRouteHelper.MENU;
 	}
 	
-
 	@GetMapping("/listafinal")
 	public String listafinal(Model model) {
 			model.addAttribute("finalesList", finalService.getfinalesActivos());
 		return "menu-form/lista-final";
 	}
-	
 	
 	@GetMapping("/formfinal")
 	public String formfinal(Model model){
@@ -84,8 +82,6 @@ public class RegisterController {
 		model.addAttribute("materias", materiaRepository.findAll());
 		 return "menu-form/form-final";
 	}
-	
-	
 	
 	@PostMapping("/formfinal")
 	public String formfinal(@Valid @ModelAttribute("fin")Final fin, BindingResult result, ModelMap model){
@@ -105,21 +101,18 @@ public class RegisterController {
 		 return "menu-form/lista-final";
 	}
 	
-	
 	@GetMapping("/listacursada")
 	public String listacursada(Model model) {
 			model.addAttribute("cursadaList", cursadaService.getCursadasActivas());
 		return "menu-form/lista-cursada";
 	}
 		
-	
 	@GetMapping("/formcursada")
 	public String formCursada(Model model){
 		model.addAttribute("cursada", new Cursada());
 		model.addAttribute("cursos", cursoRepository.findByCursadaIsNull());	
 		 return "menu-form/form-cursada";
 	}
-	
 	
 	@PostMapping("/formcursada")
 	public String formCursada(@Valid @ModelAttribute("cursada")Cursada cursada, BindingResult result, ModelMap model){
@@ -134,7 +127,6 @@ public class RegisterController {
 		 return "menu-form/lista-cursada";
 	}
 	
-	
 	@GetMapping("/formaula")
 	public String formAulas(Model model){
 		model.addAttribute("modelPedido", new ModelPedido());
@@ -143,17 +135,17 @@ public class RegisterController {
 		 return "menu-form/form-aula";
 	}
 	
-	
 	@PostMapping("/formaula")
 	public String formAulas(@Valid @ModelAttribute("modelPedido")ModelPedido modelPedido, BindingResult result, ModelMap model){
 		 NotaPedido pedido = modelPedido.getNotaPedido();
-		  String ruta = "menu-form/lista-aula";
 			    	if(modelPedido.getNotaPedido() instanceof Final) {
 			    		try {
 			    			espacioService.CrearEspaciosFinal(  modelPedido.getAula(), pedido.isConProyector(),  pedido.getTipoAula(),((Final)pedido).getCantEstudiantes(), 
 				    				((Final)pedido).getTurno(), ((Final)pedido).getFecha());
 			    			pedido.setAprobado(true);
+			    			pedido.setAula(modelPedido.getAula());
 			    			notaPedidoService.actualizarNotaPedido(pedido);
+			    			model.addAttribute("aularespuesta",aulaService.traerPorId(modelPedido.getAula().getId()));
 			    		} catch (Exception e) {
 							model.addAttribute("listErrorMessage", e.getMessage());
 						}
@@ -163,17 +155,13 @@ public class RegisterController {
 			    	}	
 		
 			    	model.addAttribute("modelPedido", modelPedido);
-			    	ruta = "menu";
-		 return ruta;
+		 return "menu-form/lista-aula";
 	}
 	
 	@GetMapping("/listaaula")
 	public String respuesta(Model model) {
-		//model.addAttribute("edificio", modelPedido.getAula().getEdificio().getNombre());
-		//model.addAttribute("aula", modelPedido.getAula().getNumAula());	
 		return "menu-form/lista-aula";
 	}
-	
 	
 	@GetMapping("/listafinal/borrar/{id}")
 	public String borrarFinal(Model model, @PathVariable(name="id")Long id){

@@ -17,7 +17,7 @@
 </head>
 	<body>
 		<div class="table-responsive">
-			<table id="modePedido" class="table table-bordered table-hover table-striped">
+			<table id="aularespuesta" class="table table-bordered table-hover table-striped">
 				<thead class="thead-light">
 		             <tr>
 		                <th scope="col">Edificio</th>
@@ -26,8 +26,8 @@
 				</thead>
 				<tbody>
 		            <tr class= "contenidoTabla">
-		            	<th th:text="${aula}"></th>
-		            	<th th:text="${edificio}"></th>
+		            	<th th:text="${aularespuesta} ? ${aularespuesta.edificio.nombre} : 'No asignado'"></th>
+		            	<th th:text="${aularespuesta} ? ${aularespuesta.numAula} : 'No asignado'"></th>
 		             </tr>
 				</tbody>
 			</table>
