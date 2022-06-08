@@ -1,6 +1,8 @@
 package com.ProyectoTpOo2.appG5.entity;
 
 import java.time.LocalDate;
+import java.util.Objects;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -93,5 +95,29 @@ public class Espacio {
 	public String toString() {
 		return "Espacio [id=" + id + ", fecha=" + fecha + ", turno=" + turno + ", libre=" + libre + "]";
 	}
+
+
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(aula, fecha, id, libre, turno);
+	}
+
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Espacio other = (Espacio) obj;
+		return Objects.equals(aula, other.aula) && Objects.equals(fecha, other.fecha) && Objects.equals(id, other.id)
+				&& libre == other.libre && Objects.equals(turno, other.turno);
+	}
+	
+	
 	
 }

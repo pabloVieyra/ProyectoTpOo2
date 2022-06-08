@@ -22,12 +22,14 @@
 		             <tr>
 		                <th scope="col">Edificio</th>
 		                <th scope="col">Aula</th>
+		                 <th scope="col">Fecha</th>
 		              </tr>
 				</thead>
 				<tbody>
 		            <tr class= "contenidoTabla">
 		            	<th th:text="${aularespuesta} ? ${aularespuesta.edificio.nombre} : 'No asignado'"></th>
 		            	<th th:text="${aularespuesta} ? ${aularespuesta.numAula} : 'No asignado'"></th>
+		            	<th th:text="${fecha} ? ${fecha} : 'No asignado'"></th>
 		             </tr>
 				</tbody>
 			</table>

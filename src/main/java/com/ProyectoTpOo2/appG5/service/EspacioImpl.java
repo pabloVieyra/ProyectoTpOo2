@@ -2,6 +2,7 @@ package com.ProyectoTpOo2.appG5.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,51 +23,54 @@ public class EspacioImpl implements EspacioService{
 	EspacioRepository espacioRepository;
 	
 	//si no existe genera espacio para un aula y una fecha especifica
-	public Espacio agregar(LocalDate fecha, String turno, boolean libre, Aula aula)throws Exception{
-		//if(espacioRepository.traerEspacio(fecha, turno, aula) != null)throw new Exception("Error: no hay espacio disponible");
-		Espacio espacio = new Espacio( fecha,  turno, libre, aula);
-		espacioRepository.save(espacio);
+	public Espacio agregar(LocalDate fecha, String turno, boolean libre, Aula aula) throws Exception{
+		Espacio espacio = traerEspacio(fecha, turno, aula);
+		if(espacio != null) throw new Exception();
+		 espacio = new Espacio( fecha,  turno, libre, aula);
+		 espacioRepository.save(espacio);
 	return espacio;
 	}
 	
 	//genera espacios para el mes y el año enviados para un aula, si hay alguna excepcion significa que ya estan creados los espacios
-	public void agregarEspacioMes(int mes, int anio, String turno, Aula aula) throws Exception{		
-		int ultimoDiaMes = Funciones.traerCantDiasDeUnMes(anio,mes); 
-		Set<Espacio> espacios = null;
+	public void agregarEspacioMes(int mes, int anio, Aula aula) throws Exception{		 
 		LocalDate fechaInicio = LocalDate.of(anio, mes, 1); 
+		int ultimoDiaMes = fechaInicio.lengthOfMonth();
 		LocalDate fechaFin = LocalDate.of(anio, mes, ultimoDiaMes); 
 		List<String> turnos = new ArrayList<String>();
 		turnos.add("maniana");
 		turnos.add("tarde");
 		turnos.add("noche");
 		while(fechaInicio.isBefore(fechaFin.plusDays(1))){	
+			Set<Espacio> espacios = new HashSet<Espacio>();
 			for(int i = 0; i < 3; i ++) {
-			espacios.add(this.agregar(fechaInicio, turnos.get(i), true,aula));
+				espacios.add(this.agregar(fechaInicio, turnos.get(i), true,aula));	
 			}
-			fechaInicio = fechaInicio.plusDays(1);
 			aula.setEspacio(espacios);
-		}		
+			fechaInicio = fechaInicio.plusDays(1);
+		}
 	}
 	
-	
+	public List<Espacio> traerEspacios(){
+		return (List<Espacio>) espacioRepository.findAll();
+	}
+
 	public Espacio traerEspacio(LocalDate fecha, String turno, Aula aula){
 		return espacioRepository.findEspacio(fecha, turno,aula.getId(),true);
 	}
 
-	
-	public int CrearEspaciosFinal(Aula aula, boolean conProyector, String tipoAula, int cantEstudiantes, String turno, LocalDate fecha) throws Exception {
+	public int CrearEspacios(Aula aula, boolean conProyector, String tipoAula, int cantEstudiantes, String turno, LocalDate fecha) throws Exception {
 		Espacio espacio = new Espacio();
 		boolean taller = false; 
 		boolean carga = false;
 		if(tipoAula.equalsIgnoreCase("Taller")) {taller=true;}
 			if((aula instanceof Taller) && taller) {
-				if(((Taller)aula).getCantSillas() < cantEstudiantes) throw new Exception("El aula pedida no cuenta con la capacidad");
+				((Taller)aula).esValida(cantEstudiantes, conProyector);
 					   espacio = traerEspacio(fecha, turno, aula);
 						if(espacio == null)throw new Exception("El aula no esta disponible");
 							espacio.setLibre(false);
 							espacioRepository.save(espacio);
 			}else {
-				if(((Tradicional)aula).getCantBancos() < cantEstudiantes && ((Tradicional)aula).isTieneProyector() != conProyector) throw new Exception("El aula pedida no cuenta con lo requerido");
+				((Tradicional)aula).esValida(cantEstudiantes, conProyector);
 					 espacio = traerEspacio(fecha, turno, aula);
 					if(espacio == null)throw new Exception("El aula no esta disponible");
 					espacio.setLibre(carga);
@@ -74,5 +78,45 @@ public class EspacioImpl implements EspacioService{
 			}
 		return aula.getNumAula();
 	}
+	
+	public int CrearEspaciosFinal(Aula aula, boolean conProyector, String tipoAula, int cantEstudiantes, String turno, LocalDate fecha) throws Exception{
+		CrearEspacios( aula,  conProyector,  tipoAula,  cantEstudiantes,  turno,  fecha);
+		return aula.getNumAula();
+	}
+	
+	@Override
+	public int CrearEspaciosCursada(Aula aula, boolean conProyector, String tipoAula, int cantEstudiantes, String turno,
+			LocalDate inicio, LocalDate fin, int porcentaje) throws Exception {
+		if(porcentaje==25) {
+			CrearEspacios( aula,  conProyector,  tipoAula,  cantEstudiantes,  turno,  inicio.plusDays(56));
+			CrearEspacios( aula,  conProyector,  tipoAula,  cantEstudiantes,  turno,  inicio.plusDays(105));
+		}
+		if(porcentaje==50) {
+			espaciosMitadCursada( aula,  conProyector,  tipoAula,  cantEstudiantes,  turno, inicio,  fin,  porcentaje);
+		}
+		if(porcentaje==100) {
+			espaciosCompletoCursada( aula,  conProyector,  tipoAula,  cantEstudiantes,  turno, inicio,  fin,  porcentaje);
+		}
+		
+		return aula.getNumAula();
+	}
+	
+	public void espaciosMitadCursada(Aula aula, boolean conProyector, String tipoAula, int cantEstudiantes, String turno,
+			LocalDate inicio, LocalDate fin, int porcentaje) throws Exception{
+		while(inicio.isBefore(fin.plusDays(1))){	
+			CrearEspacios( aula,  conProyector,  tipoAula,  cantEstudiantes,  turno,  inicio.plusDays(14));	
+			inicio = inicio.plusDays(14);
+		}		
+	}
+	
+	public void espaciosCompletoCursada(Aula aula, boolean conProyector, String tipoAula, int cantEstudiantes, String turno,
+			LocalDate inicio, LocalDate fin, int porcentaje) throws Exception{
+		while(inicio.isBefore(fin.plusDays(1))){	
+			CrearEspacios( aula,  conProyector,  tipoAula,  cantEstudiantes,  turno,  inicio.plusDays(14));
+			inicio = inicio.plusDays(14);
+		}		
+	}
+	
+	
 		
 	}
