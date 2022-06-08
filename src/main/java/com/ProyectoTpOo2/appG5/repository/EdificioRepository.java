@@ -15,4 +15,6 @@ public interface EdificioRepository extends CrudRepository<Edificio, Long>{
 	public Edificio findByNombre(String nombre);
 	
 	public List<Edificio> findAllByOrderByNombreAsc();
+	
+	public Edificio findByid(Long id);	
 }
