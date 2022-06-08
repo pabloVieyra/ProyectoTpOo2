@@ -43,5 +43,9 @@ public class NotaPedidoImpl implements NotaPedidoService{
 		notaPedido.setAprobado(false);	
 		return repository.save(notaPedido);
 	}
-	
+
+	@Override
+	public NotaPedido actualizarNotaPedido(NotaPedido notaPedido) {
+		return repository.save(notaPedido);
+	}
 }
