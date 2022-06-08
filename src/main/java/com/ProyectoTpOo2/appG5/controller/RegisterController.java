@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.ProyectoTpOo2.appG5.entity.Cursada;
+import com.ProyectoTpOo2.appG5.entity.Edificio;
 import com.ProyectoTpOo2.appG5.entity.Final;
 import com.ProyectoTpOo2.appG5.entity.NotaPedido;
 import com.ProyectoTpOo2.appG5.helpers.ViewRouteHelper;
@@ -183,6 +184,39 @@ public class RegisterController {
 		}
 		return listacursada(model);
 	}
+	
+	@GetMapping("/listaedificios")
+	public String listaedificios(Model model) {
+			model.addAttribute("edificiosList", edificioService.getEdificioEnOrden());
+		return "menu-form/lista-edificio";
+	}
+	
+	@GetMapping("/listaedificios/editar/{id}")
+	public String edificioEditar(Model model, @PathVariable(name="id")Long id){
+		Edificio edificio=edificioService.buscarPorId(id);
+		model.addAttribute("edificio",edificio);
+
+		 return "menu-form/form-edificio";
+	}
+	
+	@PostMapping("/listaedificios/editar/{id}")
+	public String formedificioEditar(@Valid @ModelAttribute("edificio")Edificio edificio, BindingResult result, ModelMap model){
+		
+		  if(result.hasErrors()) { 
+			  model.addAttribute("edificio", edificio);			  
+		  }else {
+			  try {
+				  edificio=edificioService.actualizar(edificio);
+			} catch (Exception e) {
+				model.addAttribute("listErrorMessage", e.getMessage());
+				e.printStackTrace();
+			}
+		  } 
+		model.addAttribute("edificiosList", edificioService.getEdificioEnOrden());
+
+		  return "menu-form/lista-edificio";
+	}
+	
 	
 }
 

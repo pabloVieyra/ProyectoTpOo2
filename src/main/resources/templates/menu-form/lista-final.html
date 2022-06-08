@@ -38,6 +38,7 @@
 		                <th scope="col">Aula</th>
 		                <th scope="col">Descripcion</th>
 		                <th scope="col"></th>
+
 		              </tr>
 				</thead>
 				<tbody>
@@ -53,9 +54,8 @@
 						<th th:text="${final.conProyector} ? 'Si':'No'"></th>
 						<th></th>
 						<th th:text="${final.descripcion}"></th>  
-						<th>
-							<a th:href="@{/listafinal/borrar/} + ${final.id}"><img src="/img/eliminar.png"></a>
-						</th>
+						<th><a th:href="@{/listafinal/borrar/} + ${final.id}"><img src="/img/eliminar.png"></a></th>
+
 		             </tr>
 				</tbody>
 			</table>

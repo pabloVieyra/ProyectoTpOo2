@@ -25,7 +25,7 @@ public class Edificio {
 	private String nombre;
 	
 	
-	@OneToMany(cascade=CascadeType.PERSIST,fetch=FetchType.LAZY,mappedBy="id")
+	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="id")
 	private Set<Aula> aula;
 
 	public Edificio() {
