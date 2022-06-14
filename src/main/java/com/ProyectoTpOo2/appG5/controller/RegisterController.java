@@ -1,8 +1,4 @@
 package com.ProyectoTpOo2.appG5.controller;
-
-import java.time.LocalDate;
-import java.util.List;
-
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,15 +9,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import com.ProyectoTpOo2.appG5.entity.Aula;
 import com.ProyectoTpOo2.appG5.entity.Cursada;
 import com.ProyectoTpOo2.appG5.entity.Edificio;
 import com.ProyectoTpOo2.appG5.entity.Final;
 import com.ProyectoTpOo2.appG5.entity.NotaPedido;
 import com.ProyectoTpOo2.appG5.helpers.ViewRouteHelper;
 import com.ProyectoTpOo2.appG5.model.ModelPedido;
-import com.ProyectoTpOo2.appG5.repository.CarreraRepository;
 import com.ProyectoTpOo2.appG5.repository.CursoRepository;
 import com.ProyectoTpOo2.appG5.repository.MateriaRepository;
+import com.ProyectoTpOo2.appG5.repository.TallerRepository;
+import com.ProyectoTpOo2.appG5.repository.TradicionalRepository;
 import com.ProyectoTpOo2.appG5.service.AulaService;
 import com.ProyectoTpOo2.appG5.service.CursadaService;
 import com.ProyectoTpOo2.appG5.service.EdificioService;
@@ -54,13 +52,16 @@ public class RegisterController {
 	EspacioService espacioService;
 	
 	@Autowired
-	CarreraRepository carreraRepository;
-	
-	@Autowired
 	MateriaRepository materiaRepository;
 	
 	@Autowired
 	CursoRepository cursoRepository;
+	
+	@Autowired
+	TallerRepository tallerRepository;
+	
+	@Autowired
+	TradicionalRepository tradicionalRepository;
 	
 	@GetMapping({"/","/login"})
 	public String index() {
@@ -73,7 +74,7 @@ public class RegisterController {
 		if(espacioService.traerEspacios().isEmpty()) {
 		try {
 			for(int i = 1; i< 13; i++) {
-			espacioService.agregarEspacioMes(12, 2023, aulaService.traerPorId((long)1));	
+			espacioService.agregarEspacioPorMes(i, 2023, aulaService.traerPorId((long)1));	
 			}
 		} catch (Exception e) {
 			model.addAttribute("listErrorMessage", e.getMessage());
@@ -85,15 +86,15 @@ public class RegisterController {
 	
 	@GetMapping("/listafinal")
 	public String listafinal(Model model) {
-			model.addAttribute("finalesList", finalService.getfinalesActivos());
-		return "menu-form/lista-final";
+			model.addAttribute("finalesList", finalService.traerFinalesActivos());
+		return ViewRouteHelper.LISTAFINAL;
 	}
 	
 	@GetMapping("/formfinal")
 	public String formfinal(Model model){
 		model.addAttribute("fin", new Final());
 		model.addAttribute("materias", materiaRepository.findAll());
-		 return "menu-form/form-final";
+		 return ViewRouteHelper.FORMFINAL;
 	}
 	
 	@PostMapping("/formfinal")
@@ -105,26 +106,26 @@ public class RegisterController {
 		  }else {
 			  try {
 				fin=finalService.crearFinal(fin);
-				model.addAttribute("finalesList", finalService.getfinalesActivos());
+				model.addAttribute("finalesList", finalService.traerFinalesActivos());
 			} catch (Exception e) {
 				model.addAttribute("listErrorMessage", e.getMessage());
 				e.printStackTrace();
 			}
 		  } 
-		 return "menu-form/lista-final";
+		 return ViewRouteHelper.LISTAFINAL;
 	}
 	
 	@GetMapping("/listacursada")
 	public String listacursada(Model model) {
-			model.addAttribute("cursadaList", cursadaService.getCursadasActivas());
-		return "menu-form/lista-cursada";
+			model.addAttribute("cursadaList", cursadaService.traerCursadasActivas());
+		return ViewRouteHelper.LISTACURSADA;
 	}
 		
 	@GetMapping("/formcursada")
 	public String formCursada(Model model){
 		model.addAttribute("cursada", new Cursada());
 		model.addAttribute("cursos", cursoRepository.findByCursadaIsNull());	
-		 return "menu-form/form-cursada";
+		 return ViewRouteHelper.FORMCURSADA;
 	}
 	
 	@PostMapping("/formcursada")
@@ -135,84 +136,63 @@ public class RegisterController {
 				  model.addAttribute("cursos", cursoRepository.findByCursadaIsNull());
 		  }else {
 					cursada=cursadaService.crearCursada(cursada);
-					model.addAttribute("cursadaList", cursadaService.getCursadasActivas());
+					model.addAttribute("cursadaList", cursadaService.traerCursadasActivas());
 		  }
-		 return "menu-form/lista-cursada";
+		 return ViewRouteHelper.LISTACURSADA;
 	}
 	
-	@GetMapping("/formaula")
-	public String formAulas(Model model){
+	@GetMapping("/formespacio")
+	public String formespacios(Model model){
 		model.addAttribute("modelPedido", new ModelPedido());
 		model.addAttribute("aulas", aulaService.traerPorEdificioEnOrden());
-		model.addAttribute("nps", notaPedidoService.TraerNotaPedidos());
-		 return "menu-form/form-aula";
+		model.addAttribute("nps", notaPedidoService.TraerNotasPedido());
+		 return ViewRouteHelper.FORMESPACIO;
 	}
 	
-	@PostMapping("/formaula")
-	public String formAulas(@Valid @ModelAttribute("modelPedido")ModelPedido modelPedido, BindingResult result, ModelMap model){
-		NotaPedido pedido = modelPedido.getNotaPedido();	
+	@PostMapping("/formespacio")
+	public String formespacios(@Valid @ModelAttribute("modelPedido")ModelPedido modelPedido, BindingResult result, ModelMap model){
+		NotaPedido pedido = modelPedido.getNotaPedido();
+		Aula aula = modelPedido.getAula();
 		if(pedido instanceof Final) {
 			    		try {
-			    			espacioService.CrearEspaciosFinal(  modelPedido.getAula(), 
-			    					pedido.isConProyector(),  
-			    					pedido.getTipoAula(),
-			    					((Final)pedido).getCantEstudiantes(), 
-				    				((Final)pedido).getTurno(), 
-				    				((Final)pedido).getFecha());
-			    			
+			    			espacioService.CrearEspaciosFinal(aula, (Final)pedido);
 			    			pedido.setAprobado(true);
-			    			pedido.setAula(modelPedido.getAula());
+			    			pedido.setAula(aula);
 			    			notaPedidoService.actualizarNotaPedido(pedido);
-			    			model.addAttribute("aularespuesta",aulaService.traerPorId(modelPedido.getAula().getId()));
+			    			
 			    			model.addAttribute("modelPedido", modelPedido);
 					    	model.addAttribute("fecha", ((Final)pedido).getFecha());
+					    	model.addAttribute("espaciosList", espacioService.traerPorIdNotaPedidoActivo());
 			    		} catch (Exception e) {
 							model.addAttribute("listErrorMessage", e.getMessage());
 						}
-			    		
 			    	}else{
-			    		
-			    		try {
-			    			 
-			    			List<LocalDate> fechas = espacioService.CrearEspaciosCursada( modelPedido.getAula(),
-			    					pedido.isConProyector(), 
-			    					pedido.getTipoAula(),
-				    				((Cursada)pedido).getCurso().getCantEstudiantes(),
-				    				((Cursada)pedido).getCurso().getTurno(), 
-				    				((Cursada)pedido).getFechaInicio(),
-				    				((Cursada)pedido).getFechaFin(), 
-				    				((Cursada)pedido).getPorcentaje());
-				    				
-				    		model.addAttribute("aularespuesta",fechas);
-			    			model.addAttribute("aularespuesta",aulaService.traerPorId(modelPedido.getAula().getId()));
+			    		try { 
+			    		    espacioService.CrearEspaciosCursada( aula,(Cursada)pedido);
 			    			model.addAttribute("modelPedido", modelPedido);
 					    	pedido.setAprobado(true);
 			    			pedido.setAula(modelPedido.getAula());
 			    			notaPedidoService.actualizarNotaPedido(pedido);
-			    			return "menu-form/lista-aula-cursada";
+			    			
+			    			model.addAttribute("espaciosList", espacioService.traerPorIdNotaPedidoActivo());	
 				    	} catch (Exception e) {
-						
+				    		model.addAttribute("listErrorMessage", e.getMessage());
 						}
 			    	}	
-			    	
-		 return "menu-form/lista-aula";
+		return ViewRouteHelper.LISTAESPACIO;
 	}
 	
-	@GetMapping("/listaaulafinal")
-	public String respuestafinal(Model model) {
-		return "menu-form/lista-aula";
-	}
-	
-	@GetMapping("/listaaulacursada")
-	public String respuestacursada(Model model) {
-		return "menu-form/lista-aula-cursada";
+	@GetMapping("/listaespacio")
+	public String listaEspacio(Model model) {
+		model.addAttribute("espaciosList", espacioService.traerPorIdNotaPedidoActivo());
+		return ViewRouteHelper.LISTAESPACIO;
 	}
 	
 	@GetMapping("/listafinal/borrar/{id}")
 	public String borrarFinal(Model model, @PathVariable(name="id")Long id){
 		try {
 			finalService.borrarFinal(id);
-			model.addAttribute("finalesList", finalService.getfinalesActivos());
+			model.addAttribute("finalesList", finalService.traerFinalesActivos());
 		} catch (Exception e) {
 			model.addAttribute("listErrorMessage",e.getMessage());
 		}
@@ -223,7 +203,7 @@ public class RegisterController {
 	public String borrarCursada(Model model, @PathVariable(name="id")Long id){
 		try {
 			cursadaService.borrarCursada(id);
-			model.addAttribute("cursadaList", cursadaService.getCursadasActivas());
+			model.addAttribute("cursadaList", cursadaService.traerCursadasActivas());
 		} catch (Exception e) {
 			model.addAttribute("listErrorMessage",e.getMessage());
 		}
@@ -232,40 +212,45 @@ public class RegisterController {
 	
 	@GetMapping("/listaedificios")
 	public String listaedificios(Model model) {
-			model.addAttribute("edificiosList", edificioService.getEdificioEnOrden());
-		return "menu-form/lista-edificio";
+			model.addAttribute("edificiosList", edificioService.traerEdificiosEnOrden());
+		return ViewRouteHelper.LISTAEDIFICIO;
 	}
 	
 	@GetMapping("/listaedificios/editar/{id}")
 	public String edificioEditar(Model model, @PathVariable(name="id")Long id){
-		Edificio edificio=edificioService.buscarPorId(id);
+		Edificio edificio=edificioService.traerPorId(id);
 		model.addAttribute("edificio",edificio);
 
-		 return "menu-form/form-edificio";
+		 return ViewRouteHelper.FORMEDIFICIO;
 	}
 	
-	@PostMapping("/listaedificios/editar/{id}")
+	@PostMapping("/listaedificios/editar")
 	public String formedificioEditar(@Valid @ModelAttribute("edificio")Edificio edificio, BindingResult result, ModelMap model){
-		
 		  if(result.hasErrors()) { 
 			  model.addAttribute("edificio", edificio);			  
 		  }else {
 			  try {
-				  edificio=edificioService.actualizar(edificio);
+				  edificio=edificioService.actualizarEdificio(edificio);
 			} catch (Exception e) {
 				model.addAttribute("listErrorMessage", e.getMessage());
 				e.printStackTrace();
 			}
 		  } 
-		model.addAttribute("edificiosList", edificioService.getEdificioEnOrden());
+		model.addAttribute("edificiosList", edificioService.traerEdificiosEnOrden());
 
-		  return "menu-form/lista-edificio";
+		  return ViewRouteHelper.LISTAEDIFICIO;
 	}
+	
+	@GetMapping("/listaaulas")
+	public String listaaulas(Model model) {
+			model.addAttribute("tallerList", tallerRepository.findAll());
+			model.addAttribute("tradicionalList", tradicionalRepository.findAll());
+			return ViewRouteHelper.LISTAAULAS;
+	}
+	
 	
 	
 }
 
 
 
-
-	
