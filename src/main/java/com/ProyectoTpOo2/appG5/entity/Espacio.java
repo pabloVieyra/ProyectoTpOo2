@@ -31,7 +31,9 @@ public class Espacio {
 	@Column 
 	private boolean libre;
 	
-
+	@Column
+	private long idNotaPedido;
+	
 	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	private Aula aula;
 
@@ -39,8 +41,6 @@ public class Espacio {
 		super();
 	}
 
-	
-	
 	public Espacio(LocalDate fecha, String turno, boolean libre, Aula aula) {
 		super();
 		this.fecha = fecha;
@@ -48,8 +48,15 @@ public class Espacio {
 		this.libre = libre;
 		this.aula = aula;
 	}
-
-
+	
+	public Espacio(LocalDate fecha, String turno, boolean libre, long idNotaPedido, Aula aula) {
+		super();
+		this.fecha = fecha;
+		this.turno = turno;
+		this.libre = libre;
+		this.idNotaPedido = idNotaPedido;
+		this.aula = aula;
+	}
 
 	public Long getId() {
 		return id;
@@ -91,16 +98,27 @@ public class Espacio {
 		this.aula = aula;
 	}
 
+	public long getIdNotaPedido() {
+		return idNotaPedido;
+	}
+
+	public void setIdNotaPedido(long idNotaPedido) {
+		this.idNotaPedido = idNotaPedido;
+	}
+
+
+
 	@Override
 	public String toString() {
-		return "Espacio [id=" + id + ", fecha=" + fecha + ", turno=" + turno + ", libre=" + libre + "]";
+		return "Espacio [id=" + id + ", fecha=" + fecha + ", turno=" + turno + ", libre=" + libre + ", idNotaPedido="
+				+ idNotaPedido + "]";
 	}
 
 
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(aula, fecha, id, libre, turno);
+		return Objects.hash(fecha, id, idNotaPedido, libre, turno);
 	}
 
 
@@ -114,10 +132,13 @@ public class Espacio {
 		if (getClass() != obj.getClass())
 			return false;
 		Espacio other = (Espacio) obj;
-		return Objects.equals(aula, other.aula) && Objects.equals(fecha, other.fecha) && Objects.equals(id, other.id)
+		return Objects.equals(fecha, other.fecha) && Objects.equals(id, other.id) && idNotaPedido == other.idNotaPedido
 				&& libre == other.libre && Objects.equals(turno, other.turno);
 	}
 	
+	
+
+
 	
 	
 }
