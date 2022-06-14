@@ -145,7 +145,7 @@ public class RegisterController {
 	public String formespacios(Model model){
 		model.addAttribute("modelPedido", new ModelPedido());
 		model.addAttribute("aulas", aulaService.traerPorEdificioEnOrden());
-		model.addAttribute("nps", notaPedidoService.TraerNotasPedido());
+		model.addAttribute("nps", notaPedidoService.TraerNotasPedidoPendientes());
 		 return ViewRouteHelper.FORMESPACIO;
 	}
 	

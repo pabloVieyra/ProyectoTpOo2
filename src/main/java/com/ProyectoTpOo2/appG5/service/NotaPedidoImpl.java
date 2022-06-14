@@ -25,4 +25,9 @@ public class NotaPedidoImpl implements NotaPedidoService{
 	public NotaPedido actualizarNotaPedido(NotaPedido notaPedido) {
 		return repository.save(notaPedido);
 	}
+	
+	@Override
+	public List<NotaPedido> TraerNotasPedidoPendientes(){
+		return repository.findNotaPedidoByAprobado(false);
+	}
 }
