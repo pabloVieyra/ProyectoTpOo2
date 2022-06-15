@@ -20,6 +20,7 @@ import com.ProyectoTpOo2.appG5.repository.CursoRepository;
 import com.ProyectoTpOo2.appG5.repository.MateriaRepository;
 import com.ProyectoTpOo2.appG5.repository.TallerRepository;
 import com.ProyectoTpOo2.appG5.repository.TradicionalRepository;
+import com.ProyectoTpOo2.appG5.repository.UserRepository;
 import com.ProyectoTpOo2.appG5.service.AulaService;
 import com.ProyectoTpOo2.appG5.service.CursadaService;
 import com.ProyectoTpOo2.appG5.service.EdificioService;
@@ -62,6 +63,9 @@ public class RegisterController {
 	
 	@Autowired
 	TradicionalRepository tradicionalRepository;
+	
+	@Autowired
+	UserRepository userRepository;
 	
 	@GetMapping({"/","/login"})
 	public String index() {
@@ -248,7 +252,11 @@ public class RegisterController {
 			return ViewRouteHelper.LISTAAULAS;
 	}
 	
-	
+	@GetMapping("/listausuarios")
+	public String listausuarios(Model model) {
+			model.addAttribute("usuariosList", userRepository.findAll());
+		return ViewRouteHelper.LISTAUSUARIO;
+	}
 	
 }
 

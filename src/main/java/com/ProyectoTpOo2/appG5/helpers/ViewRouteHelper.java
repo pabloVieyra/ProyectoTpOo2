@@ -15,6 +15,7 @@ public class ViewRouteHelper {
 	public final static String LISTAFINAL = "menu-form/lista-final";
 	public final static String LISTACURSADA = "menu-form/lista-cursada";
 	public final static String LISTAAULAS = "menu-form/lista-aulas";
+	public final static String LISTAUSUARIO = "menu-form/lista-usuarios";
 }
 
 
