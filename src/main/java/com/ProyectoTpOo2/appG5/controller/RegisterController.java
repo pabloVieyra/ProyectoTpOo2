@@ -79,6 +79,7 @@ public class RegisterController {
 		try {
 			for(int i = 1; i< 13; i++) {
 			espacioService.agregarEspacioPorMes(i, 2023, aulaService.traerPorId((long)1));	
+			espacioService.agregarEspacioPorMes(i, 2023, aulaService.traerPorId((long)2));
 			}
 		} catch (Exception e) {
 			model.addAttribute("listErrorMessage", e.getMessage());

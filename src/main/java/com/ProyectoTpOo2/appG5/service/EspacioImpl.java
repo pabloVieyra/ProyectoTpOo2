@@ -117,8 +117,8 @@ public class EspacioImpl implements EspacioService{
 		LocalDate inicio = pedido.getFechaInicio();
 		LocalDate fin = pedido.getFechaFin();
 		while(inicio.isBefore(fin.plusDays(1))){	
-			CrearEspacios(aula, pedido.isConProyector(),  pedido.getTipoAula(),  pedido.getCurso().getCantEstudiantes(),  pedido.getCurso().getTurno(),   inicio.plusDays(1), pedido.getId());
-			inicio = inicio.plusDays(1);
+			CrearEspacios(aula, pedido.isConProyector(),  pedido.getTipoAula(),  pedido.getCurso().getCantEstudiantes(),  pedido.getCurso().getTurno(),   inicio.plusDays(7), pedido.getId());
+			inicio = inicio.plusDays(7);
 		}
 		return aula.getNumAula();
 	}
