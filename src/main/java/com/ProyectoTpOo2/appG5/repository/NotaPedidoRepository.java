@@ -11,4 +11,6 @@ public interface NotaPedidoRepository extends CrudRepository<NotaPedido, Long>{
 	
 	public  List<NotaPedido> findAll();
 	
+	public  List<NotaPedido> findNotaPedidoByAprobado(boolean aprobado);
+	
 }

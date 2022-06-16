@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Gestion aulas</title>
+	
+
+    <!--JQUERY-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	
+	<!-- DATA TABLE -->
+	<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">	
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+	<link rel="stylesheet" type="text/css" href="/form.css" th:href="@{/css/form.css}">
+</head>
+<body>
+    <script type="text/javascript">
+       $(document).ready(function() {
+       $('#espaciosList').DataTable();
+      } );
+    </script>
+    <div class="d-flex justify-content-end form-group">
+		
+			<a type="reset"  href="/menu" class="btn btn-dark "> Volver al Menu</a>
+			
+		</div>
+      	<div class="table-responsive">
+			<table id="espaciosList" class="table table-bordered table-hover table-striped">
+				<thead class="thead-light">
+		           <tr>
+		             <th scope="col">#</th>
+		             <th scope="col">Libre</th>
+		             <th scope="col">Turno</th>
+		             <th scope="col">Aula numero</th>
+		             <th scope="col">Edificio</th>
+		             <th scope="col">Fecha</th>
+		             <th scope="col">Id nota pedido</th>
+		            </tr>
+				</thead>
+				<tbody>
+				     <tr class= "contenidoTabla" th:each= "espacio: ${espaciosList}">
+				         <th th:text="${espacio.id}"></th>
+				         <th th:text="${espacio.libre}? 'Si' : 'No' "></th>
+				         <th th:text="${espacio.turno}"></th>
+				         <th th:text="${espacio.aula.numAula}"></th>
+				         <th th:text="${espacio.aula.edificio.nombre}"></th>
+				         <th th:text="${espacio.fecha}"></th>
+				         <th th:text="${espacio.idNotaPedido}"></th>  
+		              </tr>
+			   </tbody>
+			</table>
+			<div class="alert alert-danger text-center" th:if="${listErrorMessage}" th:text="${listErrorMessage}">Error Message</div>
+		</div>
+	</body>
+</html>

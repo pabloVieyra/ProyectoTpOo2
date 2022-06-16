@@ -41,6 +41,7 @@
 		             <th scope="col">Con proyector</th>
 		             <th scope="col">Aula</th>
 		             <th scope="col">Descripcion</th>
+		             <th scope="col"></th>
 		            </tr>
 				</thead>
 				<tbody>
@@ -54,6 +55,7 @@
 				                <th th:text="${cursada.curso.cantEstudiantes}"></th>
 				                <th th:text="${cursada.tipoAula}"></th>
 				                <th th:text="${cursada.conProyector} ? 'Si':'No'"></th>
+				                <th th:text="${cursada.aula}? |${cursada.aula.numAula} - ${cursada.aula.edificio.nombre}|:'No asignada'"></th>
 				                <th th:text="${cursada.descripcion}"></th>
 				      	<th>
 							<a th:href="@{/listacursada/borrar/} + ${cursada.id}"><img src="/img/eliminar.png"></a>
@@ -62,6 +64,11 @@
 			   </tbody>
 			</table>
 			<div class="alert alert-danger text-center" th:if="${listErrorMessage}" th:text="${listErrorMessage}">Error Message</div>
+		</div>
+		<div class="boton">
+			 <a href="/listacursada/?format=pdf">
+			   Exportar
+			 </a>
 		</div>
 	</body>
 </html>

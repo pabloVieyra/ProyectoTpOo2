@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Gestion aulas</title>
+		
+	
+	    <!--JQUERY-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		
+		<!-- DATA TABLE -->
+		<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+		<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">	
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+		<link rel="stylesheet" type="text/css" href="/form.css" th:href="@{/css/form.css}">
+	</head>
+	 <script type="text/javascript">
+       $(document).ready(function() {
+       $('#tallerList').DataTable();
+      } );
+    </script>
+     <script type="text/javascript">
+       $(document).ready(function() {
+       $('#tradicionalList').DataTable();
+      } );
+    </script>
+	
+	<body>
+	<div class="d-flex justify-content-end form-group">
+		<a type="reset"  href="/menu" class="btn btn-dark "> Volver al Menu</a>
+	</div>
+		<div class="table-responsive">
+		<h2 class="tituloAulas">Lista aulas talleres</h2>
+			<table id="tallerList" class="table table-bordered table-hover table-striped">
+				<thead class="thead-light">
+		             <tr>
+		             	<th scope="col">#</th>
+		                <th scope="col">Numero</th>
+		                <th scope="col">Edificio</th>
+		                <th scope="col">Proyector</th>
+		                <th scope="col">Tama&ntildeo</th>    
+		                <th scope="col"></th>
+
+		              </tr>
+				</thead>
+				<tbody>
+		            <tr class= "contenidoTabla" th:each= "taller: ${tallerList}">
+		            	<th th:text="${taller.id}"></th>
+		            	<th th:text="${taller.numAula}"></th>
+		                <th th:text="${taller.edificio.nombre}"></th>
+		                <th th:text="${taller.tieneProyector}? 'Si':'No'"></th>
+						<th th:text="${taller.cantSillas}"></th>
+						<th></th>
+		             </tr>
+				</tbody>
+			</table>
+		</div>
+		<div>
+		<h2 class="tituloAulas">Lista aulas tradicionales</h2>
+			<table id="tradicionalList" class="table table-bordered table-hover table-striped">
+				<thead class="thead-light">
+		             <tr>
+		             	<th scope="col">#</th>
+		                <th scope="col">Numero</th>
+		                <th scope="col">Edificio</th>
+		                <th scope="col">Proyector</th>
+		                <th scope="col">Tama&ntildeo</th>    
+		                <th scope="col"></th>
+		              </tr>
+				</thead>
+				<tbody>
+		            <tr class= "contenidoTabla" th:each= "tradicional: ${tradicionalList}">
+		            	<th th:text="${tradicional.id}"></th>
+		            	<th th:text="${tradicional.numAula}"></th>
+		                <th th:text="${tradicional.edificio.nombre}"></th>
+		                <th th:text="${tradicional.tieneProyector}? 'Si':'No'"></th>
+						<th th:text="${tradicional.cantBancos}"></th>	
+						<th></th>
+		             </tr>
+				</tbody>
+			</table>
+			<div class="alert alert-danger text-center" th:if="${listErrorMessage}" th:text="${listErrorMessage}">Error Message</div>
+		</div>
+	</body>	
+</html>
