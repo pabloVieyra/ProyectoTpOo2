@@ -229,7 +229,7 @@ public class RegisterController {
 		 return ViewRouteHelper.FORMEDIFICIO;
 	}
 	
-	@PostMapping("/listaedificios/editar")
+	@PostMapping("/listaedificios/editar/{id}")
 	public String formedificioEditar(@Valid @ModelAttribute("edificio")Edificio edificio, BindingResult result, ModelMap model){
 		  if(result.hasErrors()) { 
 			  model.addAttribute("edificio", edificio);			  
