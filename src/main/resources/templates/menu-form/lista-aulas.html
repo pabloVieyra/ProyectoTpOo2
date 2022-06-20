@@ -38,9 +38,7 @@
 		                <th scope="col">Numero</th>
 		                <th scope="col">Edificio</th>
 		                <th scope="col">Proyector</th>
-		                <th scope="col">Tama&ntildeo</th>    
-		                <th scope="col"></th>
-
+		                <th scope="col">Tama&ntildeo</th>  
 		              </tr>
 				</thead>
 				<tbody>
@@ -50,7 +48,6 @@
 		                <th th:text="${taller.edificio.nombre}"></th>
 		                <th th:text="${taller.tieneProyector}? 'Si':'No'"></th>
 						<th th:text="${taller.cantSillas}"></th>
-						<th></th>
 		             </tr>
 				</tbody>
 			</table>
@@ -64,8 +61,7 @@
 		                <th scope="col">Numero</th>
 		                <th scope="col">Edificio</th>
 		                <th scope="col">Proyector</th>
-		                <th scope="col">Tama&ntildeo</th>    
-		                <th scope="col"></th>
+		                <th scope="col">Tama&ntildeo</th>
 		              </tr>
 				</thead>
 				<tbody>
@@ -74,8 +70,7 @@
 		            	<th th:text="${tradicional.numAula}"></th>
 		                <th th:text="${tradicional.edificio.nombre}"></th>
 		                <th th:text="${tradicional.tieneProyector}? 'Si':'No'"></th>
-						<th th:text="${tradicional.cantBancos}"></th>	
-						<th></th>
+						<th th:text="${tradicional.cantBancos}"></th>
 		             </tr>
 				</tbody>
 			</table>

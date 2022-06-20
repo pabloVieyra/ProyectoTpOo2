@@ -53,7 +53,7 @@ public class Taller extends Aula{
 		
 	 //para validar en espacio 
 	public void esValida(int cantEstudiantes, boolean conProyector) throws Exception {
-		if (this.getCantSillas() < cantEstudiantes && conProyector != this.tieneProyector)
+		if (this.getCantSillas() < cantEstudiantes || conProyector != this.tieneProyector)
 			throw new Exception("El aula pedida no cuenta con la capacidad");
 		
 	}

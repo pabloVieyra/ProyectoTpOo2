@@ -70,12 +70,14 @@ public class EspacioImpl implements EspacioService{
 							espacio.setIdNotaPedido(idNotaPedido);
 							espacioRepository.save(espacio);
 			}else {
+				if(!((aula instanceof Tradicional) && !taller)) throw new Exception("El aula no coincide con el tipo de aula pedido");
 				((Tradicional)aula).esValida(cantEstudiantes, conProyector);
 					 espacio = traerEspacio(fecha, turno, aula);
 					if(espacio == null)throw new Exception("El aula no esta disponible");
 					espacio.setLibre(false);
 					espacio.setIdNotaPedido(idNotaPedido);
 					espacioRepository.save(espacio);
+				
 			}
 		return aula.getNumAula();
 	}

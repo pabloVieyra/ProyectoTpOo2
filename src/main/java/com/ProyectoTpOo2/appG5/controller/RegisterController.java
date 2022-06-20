@@ -166,7 +166,6 @@ public class RegisterController {
 			    			notaPedidoService.actualizarNotaPedido(pedido);
 			    			
 			    			model.addAttribute("modelPedido", modelPedido);
-					    	model.addAttribute("fecha", ((Final)pedido).getFecha());
 					    	model.addAttribute("espaciosList", espacioService.traerPorIdNotaPedidoActivo());
 			    		} catch (Exception e) {
 							model.addAttribute("listErrorMessage", e.getMessage());
