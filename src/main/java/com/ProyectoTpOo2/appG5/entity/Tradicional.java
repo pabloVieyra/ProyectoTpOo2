@@ -43,7 +43,7 @@ public class Tradicional extends Aula{
 	
 	//para validar en espacio 
 	public void esValida(int cantEstudiantes, boolean conProyector) throws Exception {
-		if (getCantBancos() < cantEstudiantes && isTieneProyector() != conProyector)throw new Exception("El aula pedida no cuenta con lo requerido");
+		if (getCantBancos() < cantEstudiantes || isTieneProyector() != conProyector)throw new Exception("El aula pedida no cuenta con lo requerido");
 		}
 		
 	

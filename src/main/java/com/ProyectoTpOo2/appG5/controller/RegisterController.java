@@ -166,7 +166,6 @@ public class RegisterController {
 			    			notaPedidoService.actualizarNotaPedido(pedido);
 			    			
 			    			model.addAttribute("modelPedido", modelPedido);
-					    	model.addAttribute("fecha", ((Final)pedido).getFecha());
 					    	model.addAttribute("espaciosList", espacioService.traerPorIdNotaPedidoActivo());
 			    		} catch (Exception e) {
 							model.addAttribute("listErrorMessage", e.getMessage());
@@ -229,7 +228,7 @@ public class RegisterController {
 		 return ViewRouteHelper.FORMEDIFICIO;
 	}
 	
-	@PostMapping("/listaedificios/editar")
+	@PostMapping("/listaedificios/editar/{id}")
 	public String formedificioEditar(@Valid @ModelAttribute("edificio")Edificio edificio, BindingResult result, ModelMap model){
 		  if(result.hasErrors()) { 
 			  model.addAttribute("edificio", edificio);			  

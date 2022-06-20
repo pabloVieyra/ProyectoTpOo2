@@ -57,7 +57,7 @@
 						<th th:text="${final.fecha}"></th>
 						<th th:text="${final.tipoAula}"></th>
 						<th th:text="${final.conProyector} ? 'Si':'No'"></th>
-						<th></th>
+						 <th th:text="${final.aula}? |${final.aula.numAula} - ${final.aula.edificio.nombre}|:'No asignada'"></th>
 						<th th:text="${final.descripcion}"></th>  
 						<th><a th:href="@{/listafinal/borrar/} + ${final.id}"><img src="/img/eliminar.png"></a></th>
 
